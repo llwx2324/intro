@@ -3,11 +3,11 @@
   <title>Hexo</title>
   
   
-  <link href="https://llwx2324.github.io/atom.xml" rel="self"/>
+  <link href="https://llwx2324.github.io/intro/atom.xml" rel="self"/>
   
-  <link href="https://llwx2324.github.io/"/>
+  <link href="https://llwx2324.github.io/intro/"/>
   <updated>2025-10-19T09:29:01.440Z</updated>
-  <id>https://llwx2324.github.io/</id>
+  <id>https://llwx2324.github.io/intro/</id>
   
   <author>
     <name>John Doe</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="https://llwx2324.github.io/2025/10/19/hello-world/"/>
-    <id>https://llwx2324.github.io/2025/10/19/hello-world/</id>
+    <link href="https://llwx2324.github.io/intro/2025/10/19/hello-world/"/>
+    <id>https://llwx2324.github.io/intro/2025/10/19/hello-world/</id>
     <published>2025-10-19T09:29:01.440Z</published>
     <updated>2025-10-19T09:29:01.440Z</updated>
     
