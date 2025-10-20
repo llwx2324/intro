@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>刘文鑫-个人主页</title>
   
   
   <link href="https://llwx2324.github.io/intro/atom.xml" rel="self"/>
@@ -10,7 +10,7 @@
   <id>https://llwx2324.github.io/intro/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>刘文鑫</name>
     
   </author>
   
