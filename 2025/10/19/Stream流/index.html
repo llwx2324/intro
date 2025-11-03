@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Stream流 | 刘文鑫-个人主页</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Stream流的简要介绍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stream流">
+<meta property="og:url" content="https://llwx2324.github.io/intro/2025/10/19/Stream%E6%B5%81/index.html">
+<meta property="og:site_name" content="刘文鑫-个人主页">
+<meta property="og:description" content="Stream流的简要介绍。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-10-19T02:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-23T08:02:23.340Z">
+<meta property="article:author" content="刘文鑫">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Stream">
+<meta property="article:tag" content="函数式编程">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="../../../../atom.xml" title="刘文鑫-个人主页" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="../../../../favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="../../../../css/style.css">
+
+  
+    
+<link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.0.0"><link rel="stylesheet" href="/intro/css/prism.css" type="text/css"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="../../../../index.html" id="logo">刘文鑫</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="../../../../index.html" id="subtitle">记录与分享</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="../../../../index.html">Home</a>
+        
+          <a class="main-nav-link" href="../../../../archives">Archives</a>
+        
+          <a class="main-nav-link" href="../../../../about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          
+            <a class="nav-icon" target="_blank" rel="noopener" href="https://github.com/llwx2324"><span class="fa fa-github"></span></a>
+          
+        
+        
+          <a class="nav-icon" href="../../../../atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://llwx2324.github.io/intro"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Stream流" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time class="dt-published" datetime="2025-10-19T02:00:00.000Z" itemprop="datePublished">2025-10-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Stream流
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="🧩-一、Stream-是什么？"><a href="#🧩-一、Stream-是什么？" class="headerlink" title="🧩 一、Stream 是什么？"></a>🧩 一、Stream 是什么？</h2><blockquote>
+<p><strong>Stream（流）</strong> 是对集合（或数组）中元素的一种”高级遍历与处理方式”。</p>
+</blockquote>
+<p>它不是集合本身，而是一个用来描述”数据流动和操作”的抽象层。</p>
+<p> 过滤（filter）→ 转换（map）→ 收集结果（collect）<br> 这一条链式调用就是典型的 <strong>流式编程（Stream API）</strong>。</p>
+<hr>
+<h2 id="🧭-二、Stream-的核心设计理念"><a href="#🧭-二、Stream-的核心设计理念" class="headerlink" title="🧭 二、Stream 的核心设计理念"></a>🧭 二、Stream 的核心设计理念</h2><p>Stream 的使用分为 <strong>三步走</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>说明</th>
+<th>关键方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1️⃣ 创建流</td>
+<td>从集合、数组等创建流</td>
+<td><code>stream()</code>、<code>of()</code></td>
+</tr>
+<tr>
+<td>2️⃣ 中间操作</td>
+<td>对流中的元素进行处理（<strong>不会立即执行</strong>）</td>
+<td><code>filter()</code>、<code>map()</code>、<code>sorted()</code>、<code>distinct()</code></td>
+</tr>
+<tr>
+<td>3️⃣ 终止操作</td>
+<td>执行最终计算（<strong>触发整个流的执行</strong>）</td>
+<td><code>collect()</code>、<code>count()</code>、<code>forEach()</code></td>
+</tr>
+</tbody></table>
+<p>⚠️ <strong>中间操作是惰性的</strong>：<br> 只有执行终止操作时，流才会真正遍历数据。</p>
+<hr>
+<h2 id="🧮-三、Stream-常用操作系统整理"><a href="#🧮-三、Stream-常用操作系统整理" class="headerlink" title="🧮 三、Stream 常用操作系统整理"></a>🧮 三、Stream 常用操作系统整理</h2><h3 id="（1）创建流"><a href="#（1）创建流" class="headerlink" title="（1）创建流"></a>（1）创建流</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = List.of(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从集合创建</span></span><br><span class="line">Stream&lt;String&gt; s1 = list.stream();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从数组创建</span></span><br><span class="line">Stream&lt;Integer&gt; s2 = Arrays.stream(<span class="keyword">new</span> <span class="title class_">Integer</span>[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态方法创建</span></span><br><span class="line">Stream&lt;Double&gt; s3 = Stream.of(<span class="number">3.14</span>, <span class="number">2.71</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 无限流（需限制）</span></span><br><span class="line">Stream&lt;Integer&gt; s4 = Stream.iterate(<span class="number">1</span>, n -&gt; n + <span class="number">1</span>).limit(<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="（2）中间操作（不会立刻执行）"><a href="#（2）中间操作（不会立刻执行）" class="headerlink" title="（2）中间操作（不会立刻执行）"></a>（2）中间操作（不会立刻执行）</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>filter(Predicate)</code></td>
+<td>过滤元素</td>
+<td><code>.filter(x -&gt; x &gt; 0)</code></td>
+</tr>
+<tr>
+<td><code>map(Function)</code></td>
+<td>元素映射（转换）</td>
+<td><code>.map(String::length)</code></td>
+</tr>
+<tr>
+<td><code>flatMap(Function)</code></td>
+<td>扁平化多个流</td>
+<td><code>.flatMap(List::stream)</code></td>
+</tr>
+<tr>
+<td><code>distinct()</code></td>
+<td>去重</td>
+<td><code>.distinct()</code></td>
+</tr>
+<tr>
+<td><code>sorted()</code></td>
+<td>排序</td>
+<td><code>.sorted(Comparator.naturalOrder())</code></td>
+</tr>
+<tr>
+<td><code>peek(Consumer)</code></td>
+<td>调试查看</td>
+<td><code>.peek(System.out::println)</code></td>
+</tr>
+<tr>
+<td><code>limit(n)</code></td>
+<td>截取前 n 个</td>
+<td><code>.limit(10)</code></td>
+</tr>
+<tr>
+<td><code>skip(n)</code></td>
+<td>跳过前 n 个</td>
+<td><code>.skip(5)</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="（3）终止操作（触发执行）"><a href="#（3）终止操作（触发执行）" class="headerlink" title="（3）终止操作（触发执行）"></a>（3）终止操作（触发执行）</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>collect()</code></td>
+<td>收集结果（通常转回集合）</td>
+</tr>
+<tr>
+<td><code>count()</code></td>
+<td>统计数量</td>
+</tr>
+<tr>
+<td><code>forEach()</code></td>
+<td>遍历输出</td>
+</tr>
+<tr>
+<td><code>findFirst()</code> &#x2F; <code>findAny()</code></td>
+<td>查找元素</td>
+</tr>
+<tr>
+<td><code>allMatch()</code> &#x2F; <code>anyMatch()</code> &#x2F; <code>noneMatch()</code></td>
+<td>匹配判断</td>
+</tr>
+<tr>
+<td><code>reduce()</code></td>
+<td>归约求和、合并操作</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🚀-四、Stream-的高级用法"><a href="#🚀-四、Stream-的高级用法" class="headerlink" title="🚀 四、Stream 的高级用法"></a>🚀 四、Stream 的高级用法</h2><h3 id="（1）map-vs-flatMap"><a href="#（1）map-vs-flatMap" class="headerlink" title="（1）map vs flatMap"></a>（1）<code>map</code> vs <code>flatMap</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// map: 一对一</span></span><br><span class="line">List&lt;String&gt; list = List.of(<span class="string">&quot;a,b&quot;</span>, <span class="string">&quot;c,d&quot;</span>);</span><br><span class="line">list.stream()</span><br><span class="line">    .map(s -&gt; s.split(<span class="string">&quot;,&quot;</span>)) <span class="comment">// Stream&lt;String[]&gt;</span></span><br><span class="line">    .collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line"><span class="comment">// flatMap: 一对多，打平</span></span><br><span class="line">list.stream()</span><br><span class="line">    .flatMap(s -&gt; Arrays.stream(s.split(<span class="string">&quot;,&quot;</span>))) <span class="comment">// Stream&lt;String&gt;</span></span><br><span class="line">    .collect(Collectors.toList()); <span class="comment">// [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="（2）并行流（parallelStream）"><a href="#（2）并行流（parallelStream）" class="headerlink" title="（2）并行流（parallelStream）"></a>（2）并行流（parallelStream）</h3><p>利用多核 CPU 提高性能：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; nums = IntStream.rangeClosed(<span class="number">1</span>, <span class="number">1000000</span>).boxed().toList();</span><br><span class="line"><span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> nums.parallelStream()</span><br><span class="line">               .mapToLong(Long::valueOf)</span><br><span class="line">               .sum();</span><br></pre></td></tr></table></figure>
+
+<p>⚠️ 并行流适合<strong>无共享资源、计算量大</strong>的场景，否则反而更慢。</p>
+<hr>
+<h2 id="📦-五、collect-的常见用法"><a href="#📦-五、collect-的常见用法" class="headerlink" title="📦 五、collect 的常见用法"></a>📦 五、collect 的常见用法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; names = users.stream()</span><br><span class="line">    .map(User::getName)</span><br><span class="line">    .collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">Set&lt;String&gt; set = list.stream().collect(Collectors.toSet());</span><br><span class="line"></span><br><span class="line">Map&lt;Integer, String&gt; map = users.stream()</span><br><span class="line">    .collect(Collectors.toMap(User::getId, User::getName));</span><br><span class="line"></span><br><span class="line"><span class="type">Double</span> <span class="variable">avg</span> <span class="operator">=</span> list.stream()</span><br><span class="line">    .collect(Collectors.averagingInt(String::length));</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧠-六、Stream-的特性总结"><a href="#🧠-六、Stream-的特性总结" class="headerlink" title="🧠 六、Stream 的特性总结"></a>🧠 六、Stream 的特性总结</h2><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>不存储数据</td>
+<td>只对原集合的元素进行计算</td>
+</tr>
+<tr>
+<td>不修改源数据</td>
+<td>操作结果是新的流</td>
+</tr>
+<tr>
+<td>惰性求值</td>
+<td>中间操作不会立刻执行</td>
+</tr>
+<tr>
+<td>可并行</td>
+<td>可利用多核并行计算</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-七、完整实战例子"><a href="#✅-七、完整实战例子" class="headerlink" title="✅ 七、完整实战例子"></a>✅ 七、完整实战例子</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">List&lt;User&gt; users = List.of(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;Tom&quot;</span>, <span class="number">20</span>),</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;Jerry&quot;</span>, <span class="number">22</span>),</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;Spike&quot;</span>, <span class="number">19</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">List&lt;String&gt; result = users.stream()</span><br><span class="line">    .filter(u -&gt; u.getAge() &gt;= <span class="number">20</span>)     <span class="comment">// 过滤</span></span><br><span class="line">    .sorted(Comparator.comparing(User::getAge)) <span class="comment">// 排序</span></span><br><span class="line">    .map(User::getName)                <span class="comment">// 提取名字</span></span><br><span class="line">    .collect(Collectors.toList());     <span class="comment">// 收集结果</span></span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">&quot;Tom&quot;</span>, <span class="string">&quot;Jerry&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧩-八、与函数式接口的关系"><a href="#🧩-八、与函数式接口的关系" class="headerlink" title="🧩 八、与函数式接口的关系"></a>🧩 八、与函数式接口的关系</h2><p>Stream 中大量使用 Java 8 的函数式接口：</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>对应接口</th>
+<th>参数</th>
+<th>返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>filter()</code></td>
+<td><code>Predicate&lt;T&gt;</code></td>
+<td>T → boolean</td>
+<td></td>
+</tr>
+<tr>
+<td><code>map()</code></td>
+<td><code>Function&lt;T, R&gt;</code></td>
+<td>T → R</td>
+<td></td>
+</tr>
+<tr>
+<td><code>forEach()</code></td>
+<td><code>Consumer&lt;T&gt;</code></td>
+<td>T → void</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sorted()</code></td>
+<td><code>Comparator&lt;T&gt;</code></td>
+<td>(T, T) → int</td>
+<td></td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://llwx2324.github.io/intro/2025/10/19/Stream%E6%B5%81/" data-id="cuidf0GGVRlWV8IG3QUvePv-B" data-title="Stream流" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Stream/" rel="tag">Stream</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag">函数式编程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          虚拟机中的 MySQL 3306端口被占用、mysql Docker 容器无法自启
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Stream/" rel="tag">Stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag">函数式编程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../../tags/Java/" style="font-size: 10px;">Java</a> <a href="../../../../tags/Stream/" style="font-size: 10px;">Stream</a> <a href="../../../../tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">函数式编程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2025/11/">November 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2025/10/">October 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/">Gemini CLI无法登录的问题</a>
+          </li>
+        
+          <li>
+            <a href="../../30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/">Docker常用命令</a>
+          </li>
+        
+          <li>
+            <a href="../../26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">SpringBoot的自动装配</a>
+          </li>
+        
+          <li>
+            <a href="../../21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/">虚拟机中的 MySQL 3306端口被占用、mysql Docker 容器无法自启</a>
+          </li>
+        
+          <li>
+            <a href="">Stream流</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 刘文鑫<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="../../../../js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="../../../../fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>SpringBoot的自动装配 | 刘文鑫-个人主页</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="SpringBoot的自动装配。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot的自动装配">
+<meta property="og:url" content="https://llwx2324.github.io/intro/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/index.html">
+<meta property="og:site_name" content="刘文鑫-个人主页">
+<meta property="og:description" content="SpringBoot的自动装配。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-10-26T02:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-03T11:51:03.500Z">
+<meta property="article:author" content="刘文鑫">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="../../../../atom.xml" title="刘文鑫-个人主页" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="../../../../favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="../../../../css/style.css">
+
+  
+    
+<link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.0.0"><link rel="stylesheet" href="/intro/css/prism.css" type="text/css"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="../../../../index.html" id="logo">刘文鑫</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="../../../../index.html" id="subtitle">记录与分享</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="../../../../index.html">Home</a>
+        
+          <a class="main-nav-link" href="../../../../archives">Archives</a>
+        
+          <a class="main-nav-link" href="../../../../about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          
+            <a class="nav-icon" target="_blank" rel="noopener" href="https://github.com/llwx2324"><span class="fa fa-github"></span></a>
+          
+        
+        
+          <a class="nav-icon" href="../../../../atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://llwx2324.github.io/intro"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-SpringBoot的自动装配" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time class="dt-published" datetime="2025-10-26T02:00:00.000Z" itemprop="datePublished">2025-10-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      SpringBoot的自动装配
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<h2 id="🌱-什么是自动装配"><a href="#🌱-什么是自动装配" class="headerlink" title="🌱 什么是自动装配"></a>🌱 什么是自动装配</h2><p>Spring Boot 的自动装配就是：</p>
+<blockquote>
+<p><strong>根据你引入的依赖，自动帮你把相关的 Bean 配好，不用手动写配置。</strong></p>
+</blockquote>
+<p>例如：<br> 你引入了 <code>spring-boot-starter-web</code>，Spring Boot 就会自动帮你配置：</p>
+<ul>
+<li>内嵌 Tomcat</li>
+<li><code>DispatcherServlet</code></li>
+<li>MVC 相关的 Bean</li>
+</ul>
+<p>你什么都不用写，系统就能跑起来。</p>
+<hr>
+<h2 id="⚙️-核心原理"><a href="#⚙️-核心原理" class="headerlink" title="⚙️ 核心原理"></a>⚙️ 核心原理</h2><ol>
+<li><p>启动类上的注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br></pre></td></tr></table></figure>
+
+<p>它包含：</p>
+<ul>
+<li><code>@ComponentScan</code>（扫描组件）</li>
+<li><code>@EnableAutoConfiguration</code>（开启自动配置）</li>
+</ul>
+</li>
+<li><p><code>@EnableAutoConfiguration</code> 会去加载所有配置类<br> （这些类都写在各个 jar 包里的<br> <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> 文件中）</p>
+</li>
+<li><p>Spring Boot 会判断：</p>
+<ul>
+<li>哪些类在类路径里存在</li>
+<li>哪些 Bean 你自己没配</li>
+<li>哪些配置项在 <code>application.yml</code> 里定义了</li>
+</ul>
+<p>然后“有条件”地加载对应的配置。</p>
+</li>
+</ol>
+<hr>
+<h2 id="🎯-举个例子"><a href="#🎯-举个例子" class="headerlink" title="🎯 举个例子"></a>🎯 举个例子</h2><p><code>DataSourceAutoConfiguration</code>（数据库自动配置类）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(DataSource.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(DataSource.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DataSourceAutoConfiguration</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> DataSource <span class="title function_">dataSource</span><span class="params">()</span> &#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>意思是：</p>
+<ul>
+<li>只有项目里有 <code>DataSource</code> 相关类，</li>
+<li>而且你没自己写 <code>DataSource</code> Bean，</li>
+<li>它才自动帮你创建一个默认的。</li>
+</ul>
+<hr>
+<h2 id="💡-小结"><a href="#💡-小结" class="headerlink" title="💡 小结"></a>💡 小结</h2><table>
+<thead>
+<tr>
+<th>关键点</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@SpringBootApplication</code></td>
+<td>启动入口</td>
+</tr>
+<tr>
+<td><code>@EnableAutoConfiguration</code></td>
+<td>启动自动配置功能</td>
+</tr>
+<tr>
+<td><code>@ConditionalOnXXX</code></td>
+<td>条件判断是否生效</td>
+</tr>
+<tr>
+<td><code>spring.factories</code> &#x2F; <code>AutoConfiguration.imports</code></td>
+<td>存放所有自动配置类列表</td>
+</tr>
+</tbody></table>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://llwx2324.github.io/intro/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" data-id="cuid7K7Ilq0pVnffbCbE6Y0yJ" data-title="SpringBoot的自动装配" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Docker常用命令
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">虚拟机中的 MySQL 3306端口被占用、mysql Docker 容器无法自启</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Stream/" rel="tag">Stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag">函数式编程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../../tags/Java/" style="font-size: 10px;">Java</a> <a href="../../../../tags/Stream/" style="font-size: 10px;">Stream</a> <a href="../../../../tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">函数式编程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2025/11/">November 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2025/10/">October 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/">Gemini CLI无法登录的问题</a>
+          </li>
+        
+          <li>
+            <a href="../../30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/">Docker常用命令</a>
+          </li>
+        
+          <li>
+            <a href="">SpringBoot的自动装配</a>
+          </li>
+        
+          <li>
+            <a href="../../21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/">虚拟机中的 MySQL 3306端口被占用、mysql Docker 容器无法自启</a>
+          </li>
+        
+          <li>
+            <a href="../../19/Stream%E6%B5%81/">Stream流</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 刘文鑫<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="../../../../js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="../../../../fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

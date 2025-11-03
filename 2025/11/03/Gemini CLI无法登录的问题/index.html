@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Gemini CLI无法登录的问题 | 刘文鑫-个人主页</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Gemini CLI无法登录的问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gemini CLI无法登录的问题">
+<meta property="og:url" content="https://llwx2324.github.io/intro/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="刘文鑫-个人主页">
+<meta property="og:description" content="Gemini CLI无法登录的问题。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195828642.png">
+<meta property="og:image" content="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195843175.png">
+<meta property="article:published_time" content="2025-11-03T11:35:00.000Z">
+<meta property="article:modified_time" content="2025-11-03T11:59:48.450Z">
+<meta property="article:author" content="刘文鑫">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195828642.png">
+  
+    <link rel="alternate" href="../../../../atom.xml" title="刘文鑫-个人主页" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="../../../../favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="../../../../css/style.css">
+
+  
+    
+<link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.0.0"><link rel="stylesheet" href="/intro/css/prism.css" type="text/css"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="../../../../index.html" id="logo">刘文鑫</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="../../../../index.html" id="subtitle">记录与分享</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="../../../../index.html">Home</a>
+        
+          <a class="main-nav-link" href="../../../../archives">Archives</a>
+        
+          <a class="main-nav-link" href="../../../../about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          
+            <a class="nav-icon" target="_blank" rel="noopener" href="https://github.com/llwx2324"><span class="fa fa-github"></span></a>
+          
+        
+        
+          <a class="nav-icon" href="../../../../atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://llwx2324.github.io/intro"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Gemini CLI无法登录的问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time class="dt-published" datetime="2025-11-03T11:35:00.000Z" itemprop="datePublished">2025-11-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Gemini CLI无法登录的问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195828642.png" alt="image-20251103195828642"></p>
+<p>以下是我成功登入的过程：</p>
+<p>初步检查</p>
+<p>我已开启 Clash 的 TUN 模式，并配置了相关环境变量。</p>
+<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195843175.png" alt="image-20251103195843175"></p>
+<p>为了验证代理是否生效，我在管理员权限的 PowerShell 中执行 netsh winhttp show proxy，发现输出仍为 直接访问（没有代理服务器），说明系统代理未正确设置。<br>手动配置代理</p>
+<p>于是，我通过命令 netsh winhttp set proxy 127.0.0.1:7890 手动设置了 WinHTTP 代理。<br>再次执行 netsh winhttp show proxy，确认代理已生效：<br>代理服务器: 127.0.0.1:7890<br>绕过列表: (无)<br>结果</p>
+<p>完成代理配置后，重新启动 Gemini，问题解决，服务成功运行。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://llwx2324.github.io/intro/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cuid-KeJwakBih3G58jy0RpTn" data-title="Gemini CLI无法登录的问题" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="../../../10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Docker常用命令</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Stream/" rel="tag">Stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag">函数式编程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../../tags/Java/" style="font-size: 10px;">Java</a> <a href="../../../../tags/Stream/" style="font-size: 10px;">Stream</a> <a href="../../../../tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">函数式编程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2025/11/">November 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2025/10/">October 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="">Gemini CLI无法登录的问题</a>
+          </li>
+        
+          <li>
+            <a href="../../../10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/">Docker常用命令</a>
+          </li>
+        
+          <li>
+            <a href="../../../10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">SpringBoot的自动装配</a>
+          </li>
+        
+          <li>
+            <a href="../../../10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/">虚拟机中的 MySQL 3306端口被占用、mysql Docker 容器无法自启</a>
+          </li>
+        
+          <li>
+            <a href="../../../10/19/Stream%E6%B5%81/">Stream流</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 刘文鑫<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="../../../../js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="../../../../fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
