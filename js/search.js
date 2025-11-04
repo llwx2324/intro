@@ -12,7 +12,7 @@
   }
 
   // 获取根路径
-  var root = '/intro/'; // 设置为你的根路径
+  var root = '/blog/'; // 设置为你的根路径
   
   // 尝试从script标签获取data-root属性
   var scripts = document.getElementsByTagName('script');
