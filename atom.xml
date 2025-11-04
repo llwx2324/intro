@@ -3,11 +3,11 @@
   <title>刘文鑫-个人博客</title>
   
   
-  <link href="https://lwx-blog.pages.dev/atom.xml" rel="self"/>
+  <link href="https://llwx2324.github.io/blog/atom.xml" rel="self"/>
   
-  <link href="https://lwx-blog.pages.dev/"/>
+  <link href="https://llwx2324.github.io/blog/"/>
   <updated>2025-11-03T11:59:48.450Z</updated>
-  <id>https://lwx-blog.pages.dev/</id>
+  <id>https://llwx2324.github.io/blog/</id>
   
   <author>
     <name>刘文鑫</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Gemini CLI无法登录的问题</title>
-    <link href="https://lwx-blog.pages.dev/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/"/>
-    <id>https://lwx-blog.pages.dev/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/</id>
+    <link href="https://llwx2324.github.io/blog/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>https://llwx2324.github.io/blog/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/</id>
     <published>2025-11-03T11:35:00.000Z</published>
     <updated>2025-11-03T11:59:48.450Z</updated>
     
@@ -35,8 +35,8 @@
   
   <entry>
     <title>Docker常用命令</title>
-    <link href="https://lwx-blog.pages.dev/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/"/>
-    <id>https://lwx-blog.pages.dev/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/</id>
+    <link href="https://llwx2324.github.io/blog/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/"/>
+    <id>https://llwx2324.github.io/blog/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/</id>
     <published>2025-10-30T02:00:00.000Z</published>
     <updated>2025-11-03T11:52:57.708Z</updated>
     
@@ -52,8 +52,8 @@
   
   <entry>
     <title>SpringBoot的自动装配</title>
-    <link href="https://lwx-blog.pages.dev/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/"/>
-    <id>https://lwx-blog.pages.dev/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/</id>
+    <link href="https://llwx2324.github.io/blog/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/"/>
+    <id>https://llwx2324.github.io/blog/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/</id>
     <published>2025-10-26T02:00:00.000Z</published>
     <updated>2025-11-03T11:51:03.500Z</updated>
     
@@ -69,8 +69,8 @@
   
   <entry>
     <title>虚拟机中的 MySQL 3306端口被占用、mysql Docker 容器无法自启</title>
-    <link href="https://lwx-blog.pages.dev/2025/10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/"/>
-    <id>https://lwx-blog.pages.dev/2025/10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/</id>
+    <link href="https://llwx2324.github.io/blog/2025/10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/"/>
+    <id>https://llwx2324.github.io/blog/2025/10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/</id>
     <published>2025-10-21T02:00:00.000Z</published>
     <updated>2025-11-03T11:49:10.209Z</updated>
     
@@ -86,8 +86,8 @@
   
   <entry>
     <title>Stream流</title>
-    <link href="https://lwx-blog.pages.dev/2025/10/19/Stream%E6%B5%81/"/>
-    <id>https://lwx-blog.pages.dev/2025/10/19/Stream%E6%B5%81/</id>
+    <link href="https://llwx2324.github.io/blog/2025/10/19/Stream%E6%B5%81/"/>
+    <id>https://llwx2324.github.io/blog/2025/10/19/Stream%E6%B5%81/</id>
     <published>2025-10-19T02:00:00.000Z</published>
     <updated>2025-10-23T08:02:23.340Z</updated>
     
@@ -99,11 +99,11 @@
     
     
     
-    <category term="Java" scheme="https://lwx-blog.pages.dev/tags/Java/"/>
+    <category term="Java" scheme="https://llwx2324.github.io/blog/tags/Java/"/>
     
-    <category term="Stream" scheme="https://lwx-blog.pages.dev/tags/Stream/"/>
+    <category term="Stream" scheme="https://llwx2324.github.io/blog/tags/Stream/"/>
     
-    <category term="函数式编程" scheme="https://lwx-blog.pages.dev/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    <category term="函数式编程" scheme="https://llwx2324.github.io/blog/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
