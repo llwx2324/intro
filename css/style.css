@@ -333,7 +333,7 @@ body {
 }
 #header-inner {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 #banner {
   position: absolute;
@@ -424,87 +424,207 @@ body {
 #sub-nav {
   float: right;
   margin-right: -15px;
+  position: relative;
 }
 #search-form-wrap {
   position: absolute;
-  top: 15px;
-  width: 150px;
-  height: 30px;
-  right: -150px;
+  top: 100%;
+  right: 0;
+  width: 300px;
+  max-width: 90vw;
+  margin-top: 5px;
   opacity: 0;
-  -webkit-transition: 0.2s ease-out;
-  -moz-transition: 0.2s ease-out;
-  -ms-transition: 0.2s ease-out;
-  transition: 0.2s ease-out;
+  visibility: hidden;
+  pointer-events: none;
+  -webkit-transform: translateY(-10px);
+  -moz-transform: translateY(-10px);
+  -ms-transform: translateY(-10px);
+  transform: translateY(-10px);
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  z-index: 1000;
 }
 #search-form-wrap.on {
   opacity: 1;
-  right: 0;
+  visibility: visible;
+  pointer-events: auto;
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
 }
 @media screen and (max-width: 479px) {
   #search-form-wrap {
-    width: 100%;
-    right: -100%;
+    width: calc(100vw - 20px);
+    right: 10px;
   }
 }
 .search-form {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   background: #fff;
-  padding: 5px 15px;
-  border-radius: 15px;
-  -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  -webkit-box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  overflow: hidden;
 }
 .search-form-input {
-  border: none;
-  background: none;
-  color: #555;
-  width: calc(100% - 30px);
-  font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  outline: none;
-}
-.search-form-input::-webkit-search-results-decoration,
-.search-form-input::-webkit-search-cancel-button {
-  -webkit-appearance: none;
+  display: none;
 }
 #search-input {
   width: 100%;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 12px 15px 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px 10px 0 0;
+  font-size: 14px;
+  outline: none;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#search-input:focus {
+  border-color: #4a9ff5;
+  background: #fff;
+  -webkit-box-shadow: inset 0 0 0 1px rgba(74,159,245,0.2);
+  box-shadow: inset 0 0 0 1px rgba(74,159,245,0.2);
+}
+#search-input::placeholder {
+  color: #999;
+}
+#search-input::-webkit-search-decoration,
+#search-input::-webkit-search-cancel-button,
+#search-input::-webkit-search-results-button,
+#search-input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+#search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: #ddd;
+  position: relative;
+  cursor: pointer;
+}
+#search-input::-webkit-search-cancel-button:after {
+  content: '×';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  color: #666;
+  font-size: 18px;
+  line-height: 1;
+}
+#search-input::-webkit-search-cancel-button:hover {
+  background: #ccc;
+}
+#search-input::-webkit-search-cancel-button:hover:after {
+  color: #333;
+}
+#search-input::-ms-clear {
+  display: none;
 }
 #search-results {
   display: none;
-  position: absolute;
+  position: relative;
   background: #fff;
-  border: 1px solid #ccc;
-  border-top: none;
   list-style: none;
   margin: 0;
-  padding: 0;
-  width: 100%;
-  z-index: 100;
+  padding: 8px 0;
+  max-height: 350px;
+  overflow-y: auto;
+  border-radius: 0 0 10px 10px;
 }
-#search-input:focus + #search-results {
-  display: block;
+#search-results::-webkit-scrollbar {
+  width: 6px;
 }
-.search-form-submit {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  margin-top: -7px;
-  font: 13px ForkAwesome;
-  border: none;
-  background: none;
-  color: #bbb;
+#search-results::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+#search-results::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+#search-results::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+.search-result-item {
+  padding: 10px 15px;
+  margin: 2px 8px;
+  border-radius: 6px;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  transition: all 0.2s ease;
   cursor: pointer;
 }
-.search-form-submit:hover,
-.search-form-submit:focus {
-  color: #777;
+.search-result-item:hover {
+  background: #f8f9fa;
+}
+.search-result-item a {
+  text-decoration: none;
+}
+.search-result-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+  line-height: 1.4;
+  -webkit-transition: color 0.2s ease;
+  -moz-transition: color 0.2s ease;
+  -ms-transition: color 0.2s ease;
+  transition: color 0.2s ease;
+}
+.search-result-title:hover {
+  color: #4a9ff5;
+}
+.search-result-excerpt {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.search-loading,
+.search-no-result {
+  text-align: center;
+  padding: 30px 20px;
+  color: #999;
+  font-size: 14px;
+}
+.search-more-info {
+  text-align: center;
+  padding: 12px 20px;
+  color: #999;
+  font-size: 12px;
+  border-top: 1px solid #eee;
+  margin-top: 5px;
+}
+.search-keyword {
+  color: #4a9ff5;
+  font-weight: 600;
+  background: rgba(74,159,245,0.15);
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-style: normal;
+}
+.search-form-submit {
+  display: none;
 }
 .article {
   margin: 50px 0;

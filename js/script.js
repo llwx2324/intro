@@ -15,20 +15,15 @@
     }, searchAnimDuration);
   };
 
-  $('.nav-search-btn').on('click', function(){
+  $('.nav-search-btn').on('click', function(e){
+    e.stopPropagation();
     if (isSearchAnim) return;
 
     startSearchAnim();
     $searchWrap.addClass('on');
     stopSearchAnim(function(){
-      $('.search-form-input').focus();
+      $('#search-input').focus();
     });
-  });
-
-  $('.search-form-input').on('blur', function(){
-    startSearchAnim();
-    $searchWrap.removeClass('on');
-    stopSearchAnim();
   });
 
   // Share
