@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>Docker常用命令</title>
-    <url>/blog/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/</url>
+    <url>/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/</url>
     <content><![CDATA[<hr>
 <blockquote>
 <p>适用于 CentOS 7 &#x2F; Ubuntu &#x2F; Mac &#x2F; Windows 等环境<br>Docker 版本：18.x ~ 27.x 通用</p>
@@ -378,7 +378,7 @@ docker system prune -a -f
   </entry>
   <entry>
     <title>Gemini CLI无法登录的问题</title>
-    <url>/blog/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <url>/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<hr>
 <p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195828642.png" alt="image-20251103195828642"></p>
 <p>以下是我成功登入的过程：</p>
@@ -392,7 +392,7 @@ docker system prune -a -f
   </entry>
   <entry>
     <title>SpringBoot的自动装配</title>
-    <url>/blog/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/</url>
+    <url>/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/</url>
     <content><![CDATA[<hr>
 <h2 id="🌱-什么是自动装配"><a href="#🌱-什么是自动装配" class="headerlink" title="🌱 什么是自动装配"></a>🌱 什么是自动装配</h2><p>Spring Boot 的自动装配就是：</p>
 <blockquote>
@@ -466,8 +466,103 @@ docker system prune -a -f
 ]]></content>
   </entry>
   <entry>
+    <title>虚拟机中的 MySQL 3306端口被占用、mysql Docker 容器无法自启</title>
+    <url>/2025/10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/</url>
+    <content><![CDATA[<hr>
+<h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a><strong>问题背景</strong></h2><ul>
+<li>虚拟机上手动安装的 MySQL (<code>/usr/local/mysql/bin/mysqld</code>) 占用 3306</li>
+<li>kill PID 无效（可以先试试杀死占用3306端口的进程），因为有守护进程 <code>mysqld_safe</code> 不断重启</li>
+<li>系统没有 systemd mysqld 服务</li>
+<li>Docker 容器已存在但未启动，需要端口干净并设置开机自启</li>
+</ul>
+<hr>
+<h2 id="完整解决步骤"><a href="#完整解决步骤" class="headerlink" title="完整解决步骤"></a><strong>完整解决步骤</strong></h2><h3 id="步骤-1：排查占用端口"><a href="#步骤-1：排查占用端口" class="headerlink" title="步骤 1：排查占用端口"></a><strong>步骤 1：排查占用端口</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> lsof -i:3306</span><br><span class="line">ps -fp &lt;PID&gt;（在这之前可以先试试杀死占用3306端口的进程）</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>找到 mysqld 进程和父进程（守护进程）</li>
+<li>确认路径，例如 <code>/usr/local/mysql/bin/mysqld</code></li>
+</ul>
+<hr>
+<h3 id="步骤-2：停止所有虚拟机自带-MySQL-进程"><a href="#步骤-2：停止所有虚拟机自带-MySQL-进程" class="headerlink" title="步骤 2：停止所有虚拟机自带 MySQL 进程"></a><strong>步骤 2：停止所有虚拟机自带 MySQL 进程</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> pkill -f mysqld_safe</span><br><span class="line"><span class="built_in">sudo</span> pkill -f /usr/local/mysql/bin/mysqld</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>确认端口已释放：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> lsof -i:3306</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>输出为空表示干净</li>
+</ul>
+<hr>
+<h3 id="步骤-3：禁止虚拟机自带旧-MySQL-开机启动"><a href="#步骤-3：禁止虚拟机自带旧-MySQL-开机启动" class="headerlink" title="步骤 3：禁止虚拟机自带旧 MySQL 开机启动"></a><strong>步骤 3：禁止虚拟机自带旧 MySQL 开机启动</strong></h3><ol>
+<li>禁用 init 脚本：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> chkconfig mysql off</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>检查 rc.local 或 cron：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">cat</span> /etc/rc.local</span><br><span class="line">crontab -l</span><br><span class="line"><span class="built_in">sudo</span> crontab -l</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>注释掉任何启动 MySQL 的命令</li>
+<li>cron 任务如有也需删除</li>
+</ul>
+<hr>
+<h3 id="步骤-4：设置-Docker-容器开机自启"><a href="#步骤-4：设置-Docker-容器开机自启" class="headerlink" title="步骤 4：设置 Docker 容器开机自启"></a><strong>步骤 4：设置 Docker 容器开机自启</strong></h3><ol>
+<li>对已有容器设置自启：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker update --restart unless-stopped mysql</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>启动容器：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker start mysql</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这样 mysql容器 会占用 3306，并且容器会随系统重启自动启动</li>
+</ul>
+<hr>
+<h3 id="步骤-5：确保-Docker-服务开机启动"><a href="#步骤-5：确保-Docker-服务开机启动" class="headerlink" title="步骤 5：确保 Docker 服务开机启动"></a><strong>步骤 5：确保 Docker 服务开机启动</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> docker</span><br><span class="line"><span class="built_in">sudo</span> systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Docker 服务必须开机启动，容器自启才有效</li>
+</ul>
+<hr>
+<h3 id="步骤-6：验证"><a href="#步骤-6：验证" class="headerlink" title="步骤 6：验证"></a><strong>步骤 6：验证</strong></h3><ol>
+<li>查看容器状态：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>确认容器状态是 <code>Up</code></li>
+</ul>
+<ol>
+<li>重启虚拟机：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> reboot</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>再次查看容器：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果容器 <code>Up</code> → 开机自启成功</li>
+</ul>
+<hr>
+<h2 id="关键总结"><a href="#关键总结" class="headerlink" title="关键总结"></a><strong>关键总结</strong></h2><ol>
+<li>手动安装 MySQL 通过 <code>mysqld_safe</code> 守护进程不断重启 → 单 kill 无效</li>
+<li><code>/etc/init.d/mysql</code> 脚本可能开机启动旧 MySQL → <code>chkconfig mysql off</code> 禁用</li>
+<li>彻底释放端口后，再启动 Docker MySQL</li>
+<li>Docker 容器使用 <code>--restart unless-stopped</code> + Docker 服务开机自启 → 容器随系统重启自动启动</li>
+</ol>
+<hr>
+]]></content>
+  </entry>
+  <entry>
     <title>Stream流</title>
-    <url>/blog/2025/10/19/Stream%E6%B5%81/</url>
+    <url>/2025/10/19/Stream%E6%B5%81/</url>
     <content><![CDATA[<h2 id="🧩-一、Stream-是什么？"><a href="#🧩-一、Stream-是什么？" class="headerlink" title="🧩 一、Stream 是什么？"></a>🧩 一、Stream 是什么？</h2><blockquote>
 <p><strong>Stream（流）</strong> 是对集合（或数组）中元素的一种”高级遍历与处理方式”。</p>
 </blockquote>
@@ -670,100 +765,5 @@ docker system prune -a -f
         <tag>Stream</tag>
         <tag>函数式编程</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>虚拟机中的 MySQL 3306端口被占用、mysql Docker 容器无法自启</title>
-    <url>/blog/2025/10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/</url>
-    <content><![CDATA[<hr>
-<h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a><strong>问题背景</strong></h2><ul>
-<li>虚拟机上手动安装的 MySQL (<code>/usr/local/mysql/bin/mysqld</code>) 占用 3306</li>
-<li>kill PID 无效（可以先试试杀死占用3306端口的进程），因为有守护进程 <code>mysqld_safe</code> 不断重启</li>
-<li>系统没有 systemd mysqld 服务</li>
-<li>Docker 容器已存在但未启动，需要端口干净并设置开机自启</li>
-</ul>
-<hr>
-<h2 id="完整解决步骤"><a href="#完整解决步骤" class="headerlink" title="完整解决步骤"></a><strong>完整解决步骤</strong></h2><h3 id="步骤-1：排查占用端口"><a href="#步骤-1：排查占用端口" class="headerlink" title="步骤 1：排查占用端口"></a><strong>步骤 1：排查占用端口</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> lsof -i:3306</span><br><span class="line">ps -fp &lt;PID&gt;（在这之前可以先试试杀死占用3306端口的进程）</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>找到 mysqld 进程和父进程（守护进程）</li>
-<li>确认路径，例如 <code>/usr/local/mysql/bin/mysqld</code></li>
-</ul>
-<hr>
-<h3 id="步骤-2：停止所有虚拟机自带-MySQL-进程"><a href="#步骤-2：停止所有虚拟机自带-MySQL-进程" class="headerlink" title="步骤 2：停止所有虚拟机自带 MySQL 进程"></a><strong>步骤 2：停止所有虚拟机自带 MySQL 进程</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> pkill -f mysqld_safe</span><br><span class="line"><span class="built_in">sudo</span> pkill -f /usr/local/mysql/bin/mysqld</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>确认端口已释放：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> lsof -i:3306</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>输出为空表示干净</li>
-</ul>
-<hr>
-<h3 id="步骤-3：禁止虚拟机自带旧-MySQL-开机启动"><a href="#步骤-3：禁止虚拟机自带旧-MySQL-开机启动" class="headerlink" title="步骤 3：禁止虚拟机自带旧 MySQL 开机启动"></a><strong>步骤 3：禁止虚拟机自带旧 MySQL 开机启动</strong></h3><ol>
-<li>禁用 init 脚本：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> chkconfig mysql off</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>检查 rc.local 或 cron：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">cat</span> /etc/rc.local</span><br><span class="line">crontab -l</span><br><span class="line"><span class="built_in">sudo</span> crontab -l</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>注释掉任何启动 MySQL 的命令</li>
-<li>cron 任务如有也需删除</li>
-</ul>
-<hr>
-<h3 id="步骤-4：设置-Docker-容器开机自启"><a href="#步骤-4：设置-Docker-容器开机自启" class="headerlink" title="步骤 4：设置 Docker 容器开机自启"></a><strong>步骤 4：设置 Docker 容器开机自启</strong></h3><ol>
-<li>对已有容器设置自启：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker update --restart unless-stopped mysql</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>启动容器：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker start mysql</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>这样 mysql容器 会占用 3306，并且容器会随系统重启自动启动</li>
-</ul>
-<hr>
-<h3 id="步骤-5：确保-Docker-服务开机启动"><a href="#步骤-5：确保-Docker-服务开机启动" class="headerlink" title="步骤 5：确保 Docker 服务开机启动"></a><strong>步骤 5：确保 Docker 服务开机启动</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> docker</span><br><span class="line"><span class="built_in">sudo</span> systemctl start docker</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Docker 服务必须开机启动，容器自启才有效</li>
-</ul>
-<hr>
-<h3 id="步骤-6：验证"><a href="#步骤-6：验证" class="headerlink" title="步骤 6：验证"></a><strong>步骤 6：验证</strong></h3><ol>
-<li>查看容器状态：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>确认容器状态是 <code>Up</code></li>
-</ul>
-<ol>
-<li>重启虚拟机：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> reboot</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>再次查看容器：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果容器 <code>Up</code> → 开机自启成功</li>
-</ul>
-<hr>
-<h2 id="关键总结"><a href="#关键总结" class="headerlink" title="关键总结"></a><strong>关键总结</strong></h2><ol>
-<li>手动安装 MySQL 通过 <code>mysqld_safe</code> 守护进程不断重启 → 单 kill 无效</li>
-<li><code>/etc/init.d/mysql</code> 脚本可能开机启动旧 MySQL → <code>chkconfig mysql off</code> 禁用</li>
-<li>彻底释放端口后，再启动 Docker MySQL</li>
-<li>Docker 容器使用 <code>--restart unless-stopped</code> + Docker 服务开机自启 → 容器随系统重启自动启动</li>
-</ol>
-<hr>
-]]></content>
   </entry>
 </search>
