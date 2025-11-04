@@ -462,13 +462,34 @@ body {
   border: none;
   background: none;
   color: #555;
-  width: 100%;
+  width: calc(100% - 30px);
   font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   outline: none;
 }
 .search-form-input::-webkit-search-results-decoration,
 .search-form-input::-webkit-search-cancel-button {
   -webkit-appearance: none;
+}
+#search-input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+#search-results {
+  display: none;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  z-index: 100;
+}
+#search-input:focus + #search-results {
+  display: block;
 }
 .search-form-submit {
   position: absolute;
