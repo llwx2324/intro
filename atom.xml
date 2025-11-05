@@ -6,7 +6,7 @@
   <link href="https://llwx2324.github.io/blog/atom.xml" rel="self"/>
   
   <link href="https://llwx2324.github.io/blog/"/>
-  <updated>2025-11-03T11:59:48.450Z</updated>
+  <updated>2025-11-05T09:19:33.273Z</updated>
   <id>https://llwx2324.github.io/blog/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比</title>
+    <link href="https://llwx2324.github.io/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/"/>
+    <id>https://llwx2324.github.io/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/</id>
+    <published>2025-11-05T09:00:00.000Z</published>
+    <updated>2025-11-05T09:19:33.273Z</updated>
+    
+    <content type="html"><![CDATA[<hr><p><code>ReturnCallback</code> 和 <code>ConfirmCallback</code> 是在使用 Spring AMQP（Spring Data RabbitMQ）框架时，对标准 RabbitMQ 客户端的 <code>ReturnListener</code> 和 <code>ConfirmListener</code> 机制进行的高级封装。</p><p>它们是 Spring Boot&#x2F;Spring Cloud 应用中实现消息可靠性的<strong>核心接口</strong>。</p><hr><h3 id="1-🔄-ConfirmCallback-对应-Publisher-Confirms"><a href="#1-🔄-ConfirmCallback-对应-Publisher-Confirms" class="headerlink" title="1. 🔄 ConfirmCallback (对应 Publisher Confirms)"></a>1. 🔄 ConfirmCallback (对应 Publisher Confirms)</h3><p><code>ConfirmCallback</code> 接口用于处理 <strong>生产者确认（Publisher Confirms）</strong> 的结果。它告诉生产者消息是否已被 RabbitMQ Broker 成功接收。</p><h4 id="关注点"><a href="#关注点" class="headerlink" title="关注点"></a>关注点</h4><ul><li><strong>关注阶段：</strong> 生产者 $\rightarrow$ Broker。</li><li><strong>如何使用：</strong> 将该回调实现类加到 <code>correlationData</code> 的<code>future</code>中（每次发消息都要指定，因此一般是写在业务代码中）。</li><li><strong>核心逻辑：</strong><ul><li>如果 <code>ack</code> 为 <code>true</code>：表示消息安全到达 Broker，可以从重发队列或内存中移除这条消息。</li><li>如果 <code>ack</code> 为 <code>false</code>：表示消息未能被 Broker 接收（通常是网络问题或 Broker 内部错误），需要根据 <code>correlationData</code> 尝试<strong>重发</strong>或记录失败日志。</li></ul></li></ul><hr><h3 id="2-↩️-ReturnCallback-对应-Publisher-Returns"><a href="#2-↩️-ReturnCallback-对应-Publisher-Returns" class="headerlink" title="2. ↩️ ReturnCallback (对应 Publisher Returns)"></a>2. ↩️ ReturnCallback (对应 Publisher Returns)</h3><p><code>ReturnCallback</code> 接口用于处理 <strong>生产者返回（Publisher Returns）</strong> 的事件。它告诉生产者消息虽然被 Broker 接收了，但 Exchange 无法将其路由到任何队列。</p><h4 id="关注点-1"><a href="#关注点-1" class="headerlink" title="关注点"></a>关注点</h4><ul><li><strong>关注阶段：</strong> Exchange $\rightarrow$ Queue。</li><li><strong>如何使用：</strong> 将该回调实现类注入到 Spring 的 <code>RabbitTemplate</code> 中（只能配置一个，配置类中配置）</li><li><strong>核心逻辑：</strong><ul><li>该回调方法被调用，意味着<strong>消息已丢失</strong>（无法被消费者获取）。</li><li>生产者应检查 <code>replyText</code> 和 <code>routingKey</code>，通常需要记录详细日志，然后将 <code>message</code> <strong>重新发送</strong>到备用 Exchange 或人工处理队列，以防止数据丢失。</li></ul></li></ul><hr><h3 id="📊-总结对比-Spring-AMQP-视角"><a href="#📊-总结对比-Spring-AMQP-视角" class="headerlink" title="📊 总结对比 (Spring AMQP 视角)"></a>📊 总结对比 (Spring AMQP 视角)</h3><table><thead><tr><th><strong>特性</strong></th><th><strong>ConfirmCallback</strong></th><th><strong>ReturnCallback</strong></th></tr></thead><tbody><tr><td><strong>底层对应</strong></td><td>Publisher Confirms (Ack&#x2F;Nack)</td><td>Publisher Returns</td></tr><tr><td><strong>何时触发</strong></td><td>消息被 <strong>Broker 接收&#x2F;拒绝</strong> 时</td><td>消息被 <strong>Exchange 接收</strong> 且 <strong>无法路由</strong> 到任何队列时</td></tr><tr><td><strong>关注重点</strong></td><td><strong>接收的安全性</strong></td><td><strong>路由的准确性</strong></td></tr><tr><td><strong>核心参数</strong></td><td><code>ack</code> (布尔值) 和 <code>cause(reason)</code></td><td><code>message</code> 和 <code>replyCode</code>&#x2F;<code>replyText</code></td></tr><tr><td><strong>典型处理</strong></td><td>Ack: 清除记录；Nack: <strong>重发</strong>消息</td><td>记录日志并决定是否 <strong>重新路由</strong></td></tr></tbody></table><p><strong>重要提示：</strong></p><p>在 Spring AMQP 中，这两个回调函数是实现<strong>端到端可靠性</strong>的黄金搭档。它们使业务逻辑能够清晰地处理消息发送过程中的所有异常情况。</p><p><strong>使用步骤</strong>：</p><p>1.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162446530.png" alt="image-20251105162446530"></p><p>2.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162521843.png" alt="image-20251105162521843"></p><ol start="3"><li></li></ol><p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162550437.png" alt="image-20251105162550437"></p><p>！<strong>但是以上机制都一般不会开启</strong></p>]]></content>
+    
+    
+    <summary type="html">Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比。</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Gemini CLI无法登录的问题</title>

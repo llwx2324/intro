@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比 | 刘文鑫-个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比">
+<meta property="og:url" content="https://llwx2324.github.io/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/index.html">
+<meta property="og:site_name" content="刘文鑫-个人博客">
+<meta property="og:description" content="Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162446530.png">
+<meta property="og:image" content="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162521843.png">
+<meta property="og:image" content="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162550437.png">
+<meta property="article:published_time" content="2025-11-05T09:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-05T09:19:33.273Z">
+<meta property="article:author" content="刘文鑫">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162446530.png">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="刘文鑫-个人博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/blog/css/images/L-logo-transparent.png">
+  
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.0.0"><link rel="stylesheet" href="/blog/css/prism.css" type="text/css"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">刘文鑫</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/blog/" id="subtitle">记录与分享</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/blog/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          
+            <a class="nav-icon" target="_blank" rel="noopener" href="https://github.com/llwx2324"><span class="fa fa-github"></span></a>
+          
+        
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+        <div id="search-form-wrap">
+          
+<div class="search-form">
+  <input id="search-input" type="search" placeholder="搜索本站文章..." autocomplete="off">
+  <ul id="search-results"></ul>
+</div>
+
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/" class="article-date">
+  <time class="dt-published" datetime="2025-11-05T09:00:00.000Z" itemprop="datePublished">2025-11-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p><code>ReturnCallback</code> 和 <code>ConfirmCallback</code> 是在使用 Spring AMQP（Spring Data RabbitMQ）框架时，对标准 RabbitMQ 客户端的 <code>ReturnListener</code> 和 <code>ConfirmListener</code> 机制进行的高级封装。</p>
+<p>它们是 Spring Boot&#x2F;Spring Cloud 应用中实现消息可靠性的<strong>核心接口</strong>。</p>
+<hr>
+<h3 id="1-🔄-ConfirmCallback-对应-Publisher-Confirms"><a href="#1-🔄-ConfirmCallback-对应-Publisher-Confirms" class="headerlink" title="1. 🔄 ConfirmCallback (对应 Publisher Confirms)"></a>1. 🔄 ConfirmCallback (对应 Publisher Confirms)</h3><p><code>ConfirmCallback</code> 接口用于处理 <strong>生产者确认（Publisher Confirms）</strong> 的结果。它告诉生产者消息是否已被 RabbitMQ Broker 成功接收。</p>
+<h4 id="关注点"><a href="#关注点" class="headerlink" title="关注点"></a>关注点</h4><ul>
+<li><strong>关注阶段：</strong> 生产者 $\rightarrow$ Broker。</li>
+<li><strong>如何使用：</strong> 将该回调实现类加到 <code>correlationData</code> 的<code>future</code>中（每次发消息都要指定，因此一般是写在业务代码中）。</li>
+<li><strong>核心逻辑：</strong><ul>
+<li>如果 <code>ack</code> 为 <code>true</code>：表示消息安全到达 Broker，可以从重发队列或内存中移除这条消息。</li>
+<li>如果 <code>ack</code> 为 <code>false</code>：表示消息未能被 Broker 接收（通常是网络问题或 Broker 内部错误），需要根据 <code>correlationData</code> 尝试<strong>重发</strong>或记录失败日志。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="2-↩️-ReturnCallback-对应-Publisher-Returns"><a href="#2-↩️-ReturnCallback-对应-Publisher-Returns" class="headerlink" title="2. ↩️ ReturnCallback (对应 Publisher Returns)"></a>2. ↩️ ReturnCallback (对应 Publisher Returns)</h3><p><code>ReturnCallback</code> 接口用于处理 <strong>生产者返回（Publisher Returns）</strong> 的事件。它告诉生产者消息虽然被 Broker 接收了，但 Exchange 无法将其路由到任何队列。</p>
+<h4 id="关注点-1"><a href="#关注点-1" class="headerlink" title="关注点"></a>关注点</h4><ul>
+<li><strong>关注阶段：</strong> Exchange $\rightarrow$ Queue。</li>
+<li><strong>如何使用：</strong> 将该回调实现类注入到 Spring 的 <code>RabbitTemplate</code> 中（只能配置一个，配置类中配置）</li>
+<li><strong>核心逻辑：</strong><ul>
+<li>该回调方法被调用，意味着<strong>消息已丢失</strong>（无法被消费者获取）。</li>
+<li>生产者应检查 <code>replyText</code> 和 <code>routingKey</code>，通常需要记录详细日志，然后将 <code>message</code> <strong>重新发送</strong>到备用 Exchange 或人工处理队列，以防止数据丢失。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="📊-总结对比-Spring-AMQP-视角"><a href="#📊-总结对比-Spring-AMQP-视角" class="headerlink" title="📊 总结对比 (Spring AMQP 视角)"></a>📊 总结对比 (Spring AMQP 视角)</h3><table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>ConfirmCallback</strong></th>
+<th><strong>ReturnCallback</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>底层对应</strong></td>
+<td>Publisher Confirms (Ack&#x2F;Nack)</td>
+<td>Publisher Returns</td>
+</tr>
+<tr>
+<td><strong>何时触发</strong></td>
+<td>消息被 <strong>Broker 接收&#x2F;拒绝</strong> 时</td>
+<td>消息被 <strong>Exchange 接收</strong> 且 <strong>无法路由</strong> 到任何队列时</td>
+</tr>
+<tr>
+<td><strong>关注重点</strong></td>
+<td><strong>接收的安全性</strong></td>
+<td><strong>路由的准确性</strong></td>
+</tr>
+<tr>
+<td><strong>核心参数</strong></td>
+<td><code>ack</code> (布尔值) 和 <code>cause(reason)</code></td>
+<td><code>message</code> 和 <code>replyCode</code>&#x2F;<code>replyText</code></td>
+</tr>
+<tr>
+<td><strong>典型处理</strong></td>
+<td>Ack: 清除记录；Nack: <strong>重发</strong>消息</td>
+<td>记录日志并决定是否 <strong>重新路由</strong></td>
+</tr>
+</tbody></table>
+<p><strong>重要提示：</strong></p>
+<p>在 Spring AMQP 中，这两个回调函数是实现<strong>端到端可靠性</strong>的黄金搭档。它们使业务逻辑能够清晰地处理消息发送过程中的所有异常情况。</p>
+<p><strong>使用步骤</strong>：</p>
+<p>1.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162446530.png" alt="image-20251105162446530"></p>
+<p>2.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162521843.png" alt="image-20251105162521843"></p>
+<ol start="3">
+<li></li>
+</ol>
+<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162550437.png" alt="image-20251105162550437"></p>
+<p>！<strong>但是以上机制都一般不会开启</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://llwx2324.github.io/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/" data-id="cuidzxW8zpA5L42a5l76lmOVS" data-title="Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Gemini CLI无法登录的问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2025/11/">November 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2025/10/">October 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/">Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/">Gemini CLI无法登录的问题</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/">Docker常用命令</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">SpringBoot的自动装配</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/">虚拟机中的 MySQL 3306端口被占用、mysql Docker 容器无法自启</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 刘文鑫<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/blog/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/blog/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/blog/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+<script src="/blog/js/search.js" data-root="/blog/"></script>
+
+
+  </div>
+</body>
+</html>
