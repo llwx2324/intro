@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Gemini CLI无法登录的问题</title>
+    <url>/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<hr>
+<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195828642.png" alt="image-20251103195828642"></p>
+<p>以下是我成功登入的过程：</p>
+<p>初步检查</p>
+<p>我已开启 Clash 的 TUN 模式，并配置了相关环境变量。</p>
+<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195843175.png" alt="image-20251103195843175"></p>
+<p>为了验证代理是否生效，我在管理员权限的 PowerShell 中执行 netsh winhttp show proxy，发现输出仍为 直接访问（没有代理服务器），说明系统代理未正确设置。<br>手动配置代理</p>
+<p>于是，我通过命令 netsh winhttp set proxy 127.0.0.1:7890 手动设置了 WinHTTP 代理。<br>再次执行 netsh winhttp show proxy，确认代理已生效：<br>代理服务器: 127.0.0.1:7890<br>绕过列表: (无)<br>结果</p>
+<p>完成代理配置后，重新启动 Gemini，问题解决，服务成功运行。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Docker常用命令</title>
-    <url>/blog/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/</url>
+    <url>/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/</url>
     <content><![CDATA[<hr>
 <blockquote>
 <p>适用于 CentOS 7 &#x2F; Ubuntu &#x2F; Mac &#x2F; Windows 等环境<br>Docker 版本：18.x ~ 27.x 通用</p>
@@ -377,172 +391,8 @@ docker system prune -a -f
 ]]></content>
   </entry>
   <entry>
-    <title>Gemini CLI无法登录的问题</title>
-    <url>/blog/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<hr>
-<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195828642.png" alt="image-20251103195828642"></p>
-<p>以下是我成功登入的过程：</p>
-<p>初步检查</p>
-<p>我已开启 Clash 的 TUN 模式，并配置了相关环境变量。</p>
-<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195843175.png" alt="image-20251103195843175"></p>
-<p>为了验证代理是否生效，我在管理员权限的 PowerShell 中执行 netsh winhttp show proxy，发现输出仍为 直接访问（没有代理服务器），说明系统代理未正确设置。<br>手动配置代理</p>
-<p>于是，我通过命令 netsh winhttp set proxy 127.0.0.1:7890 手动设置了 WinHTTP 代理。<br>再次执行 netsh winhttp show proxy，确认代理已生效：<br>代理服务器: 127.0.0.1:7890<br>绕过列表: (无)<br>结果</p>
-<p>完成代理配置后，重新启动 Gemini，问题解决，服务成功运行。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>SpringBoot的自动装配</title>
-    <url>/blog/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/</url>
-    <content><![CDATA[<hr>
-<h2 id="🌱-什么是自动装配"><a href="#🌱-什么是自动装配" class="headerlink" title="🌱 什么是自动装配"></a>🌱 什么是自动装配</h2><p>Spring Boot 的自动装配就是：</p>
-<blockquote>
-<p><strong>根据你引入的依赖，自动帮你把相关的 Bean 配好，不用手动写配置。</strong></p>
-</blockquote>
-<p>例如：<br> 你引入了 <code>spring-boot-starter-web</code>，Spring Boot 就会自动帮你配置：</p>
-<ul>
-<li>内嵌 Tomcat</li>
-<li><code>DispatcherServlet</code></li>
-<li>MVC 相关的 Bean</li>
-</ul>
-<p>你什么都不用写，系统就能跑起来。</p>
-<hr>
-<h2 id="⚙️-核心原理"><a href="#⚙️-核心原理" class="headerlink" title="⚙️ 核心原理"></a>⚙️ 核心原理</h2><ol>
-<li><p>启动类上的注解：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br></pre></td></tr></table></figure>
-
-<p>它包含：</p>
-<ul>
-<li><code>@ComponentScan</code>（扫描组件）</li>
-<li><code>@EnableAutoConfiguration</code>（开启自动配置）</li>
-</ul>
-</li>
-<li><p><code>@EnableAutoConfiguration</code> 会去加载所有配置类<br> （这些类都写在各个 jar 包里的<br> <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> 文件中）</p>
-</li>
-<li><p>Spring Boot 会判断：</p>
-<ul>
-<li>哪些类在类路径里存在</li>
-<li>哪些 Bean 你自己没配</li>
-<li>哪些配置项在 <code>application.yml</code> 里定义了</li>
-</ul>
-<p>然后“有条件”地加载对应的配置。</p>
-</li>
-</ol>
-<hr>
-<h2 id="🎯-举个例子"><a href="#🎯-举个例子" class="headerlink" title="🎯 举个例子"></a>🎯 举个例子</h2><p><code>DataSourceAutoConfiguration</code>（数据库自动配置类）：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(DataSource.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(DataSource.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DataSourceAutoConfiguration</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> DataSource <span class="title function_">dataSource</span><span class="params">()</span> &#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>意思是：</p>
-<ul>
-<li>只有项目里有 <code>DataSource</code> 相关类，</li>
-<li>而且你没自己写 <code>DataSource</code> Bean，</li>
-<li>它才自动帮你创建一个默认的。</li>
-</ul>
-<hr>
-<h2 id="💡-小结"><a href="#💡-小结" class="headerlink" title="💡 小结"></a>💡 小结</h2><table>
-<thead>
-<tr>
-<th>关键点</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>@SpringBootApplication</code></td>
-<td>启动入口</td>
-</tr>
-<tr>
-<td><code>@EnableAutoConfiguration</code></td>
-<td>启动自动配置功能</td>
-</tr>
-<tr>
-<td><code>@ConditionalOnXXX</code></td>
-<td>条件判断是否生效</td>
-</tr>
-<tr>
-<td><code>spring.factories</code> &#x2F; <code>AutoConfiguration.imports</code></td>
-<td>存放所有自动配置类列表</td>
-</tr>
-</tbody></table>
-<hr>
-]]></content>
-  </entry>
-  <entry>
-    <title>Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比</title>
-    <url>/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/</url>
-    <content><![CDATA[<hr>
-<p><code>ReturnCallback</code> 和 <code>ConfirmCallback</code> 是在使用 Spring AMQP（Spring Data RabbitMQ）框架时，对标准 RabbitMQ 客户端的 <code>ReturnListener</code> 和 <code>ConfirmListener</code> 机制进行的高级封装。</p>
-<p>它们是 Spring Boot&#x2F;Spring Cloud 应用中实现消息可靠性的<strong>核心接口</strong>。</p>
-<hr>
-<h3 id="1-🔄-ConfirmCallback-对应-Publisher-Confirms"><a href="#1-🔄-ConfirmCallback-对应-Publisher-Confirms" class="headerlink" title="1. 🔄 ConfirmCallback (对应 Publisher Confirms)"></a>1. 🔄 ConfirmCallback (对应 Publisher Confirms)</h3><p><code>ConfirmCallback</code> 接口用于处理 <strong>生产者确认（Publisher Confirms）</strong> 的结果。它告诉生产者消息是否已被 RabbitMQ Broker 成功接收。</p>
-<h4 id="关注点"><a href="#关注点" class="headerlink" title="关注点"></a>关注点</h4><ul>
-<li><strong>关注阶段：</strong> 生产者 $\rightarrow$ Broker。</li>
-<li><strong>如何使用：</strong> 将该回调实现类加到 <code>correlationData</code> 的<code>future</code>中（每次发消息都要指定，因此一般是写在业务代码中）。</li>
-<li><strong>核心逻辑：</strong><ul>
-<li>如果 <code>ack</code> 为 <code>true</code>：表示消息安全到达 Broker，可以从重发队列或内存中移除这条消息。</li>
-<li>如果 <code>ack</code> 为 <code>false</code>：表示消息未能被 Broker 接收（通常是网络问题或 Broker 内部错误），需要根据 <code>correlationData</code> 尝试<strong>重发</strong>或记录失败日志。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="2-↩️-ReturnCallback-对应-Publisher-Returns"><a href="#2-↩️-ReturnCallback-对应-Publisher-Returns" class="headerlink" title="2. ↩️ ReturnCallback (对应 Publisher Returns)"></a>2. ↩️ ReturnCallback (对应 Publisher Returns)</h3><p><code>ReturnCallback</code> 接口用于处理 <strong>生产者返回（Publisher Returns）</strong> 的事件。它告诉生产者消息虽然被 Broker 接收了，但 Exchange 无法将其路由到任何队列。</p>
-<h4 id="关注点-1"><a href="#关注点-1" class="headerlink" title="关注点"></a>关注点</h4><ul>
-<li><strong>关注阶段：</strong> Exchange $\rightarrow$ Queue。</li>
-<li><strong>如何使用：</strong> 将该回调实现类注入到 Spring 的 <code>RabbitTemplate</code> 中（只能配置一个，配置类中配置）</li>
-<li><strong>核心逻辑：</strong><ul>
-<li>该回调方法被调用，意味着<strong>消息已丢失</strong>（无法被消费者获取）。</li>
-<li>生产者应检查 <code>replyText</code> 和 <code>routingKey</code>，通常需要记录详细日志，然后将 <code>message</code> <strong>重新发送</strong>到备用 Exchange 或人工处理队列，以防止数据丢失。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="📊-总结对比-Spring-AMQP-视角"><a href="#📊-总结对比-Spring-AMQP-视角" class="headerlink" title="📊 总结对比 (Spring AMQP 视角)"></a>📊 总结对比 (Spring AMQP 视角)</h3><table>
-<thead>
-<tr>
-<th><strong>特性</strong></th>
-<th><strong>ConfirmCallback</strong></th>
-<th><strong>ReturnCallback</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>底层对应</strong></td>
-<td>Publisher Confirms (Ack&#x2F;Nack)</td>
-<td>Publisher Returns</td>
-</tr>
-<tr>
-<td><strong>何时触发</strong></td>
-<td>消息被 <strong>Broker 接收&#x2F;拒绝</strong> 时</td>
-<td>消息被 <strong>Exchange 接收</strong> 且 <strong>无法路由</strong> 到任何队列时</td>
-</tr>
-<tr>
-<td><strong>关注重点</strong></td>
-<td><strong>接收的安全性</strong></td>
-<td><strong>路由的准确性</strong></td>
-</tr>
-<tr>
-<td><strong>核心参数</strong></td>
-<td><code>ack</code> (布尔值) 和 <code>cause(reason)</code></td>
-<td><code>message</code> 和 <code>replyCode</code>&#x2F;<code>replyText</code></td>
-</tr>
-<tr>
-<td><strong>典型处理</strong></td>
-<td>Ack: 清除记录；Nack: <strong>重发</strong>消息</td>
-<td>记录日志并决定是否 <strong>重新路由</strong></td>
-</tr>
-</tbody></table>
-<p><strong>重要提示：</strong></p>
-<p>在 Spring AMQP 中，这两个回调函数是实现<strong>端到端可靠性</strong>的黄金搭档。它们使业务逻辑能够清晰地处理消息发送过程中的所有异常情况。</p>
-<p><strong>使用步骤</strong>：</p>
-<p>1.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162446530.png" alt="image-20251105162446530"></p>
-<p>2.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162521843.png" alt="image-20251105162521843"></p>
-<ol start="3">
-<li></li>
-</ol>
-<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162550437.png" alt="image-20251105162550437"></p>
-<p>！<strong>但是以上机制都一般不会开启</strong></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Stream流</title>
-    <url>/blog/2025/10/19/Stream%E6%B5%81/</url>
+    <url>/2025/10/19/Stream%E6%B5%81/</url>
     <content><![CDATA[<h2 id="🧩-一、Stream-是什么？"><a href="#🧩-一、Stream-是什么？" class="headerlink" title="🧩 一、Stream 是什么？"></a>🧩 一、Stream 是什么？</h2><blockquote>
 <p><strong>Stream（流）</strong> 是对集合（或数组）中元素的一种”高级遍历与处理方式”。</p>
 </blockquote>
@@ -747,8 +597,250 @@ docker system prune -a -f
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot的自动装配</title>
+    <url>/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/</url>
+    <content><![CDATA[<hr>
+<h2 id="🌱-什么是自动装配"><a href="#🌱-什么是自动装配" class="headerlink" title="🌱 什么是自动装配"></a>🌱 什么是自动装配</h2><p>Spring Boot 的自动装配就是：</p>
+<blockquote>
+<p><strong>根据你引入的依赖，自动帮你把相关的 Bean 配好，不用手动写配置。</strong></p>
+</blockquote>
+<p>例如：<br> 你引入了 <code>spring-boot-starter-web</code>，Spring Boot 就会自动帮你配置：</p>
+<ul>
+<li>内嵌 Tomcat</li>
+<li><code>DispatcherServlet</code></li>
+<li>MVC 相关的 Bean</li>
+</ul>
+<p>你什么都不用写，系统就能跑起来。</p>
+<hr>
+<h2 id="⚙️-核心原理"><a href="#⚙️-核心原理" class="headerlink" title="⚙️ 核心原理"></a>⚙️ 核心原理</h2><ol>
+<li><p>启动类上的注解：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br></pre></td></tr></table></figure>
+
+<p>它包含：</p>
+<ul>
+<li><code>@ComponentScan</code>（扫描组件）</li>
+<li><code>@EnableAutoConfiguration</code>（开启自动配置）</li>
+</ul>
+</li>
+<li><p><code>@EnableAutoConfiguration</code> 会去加载所有配置类<br> （这些类都写在各个 jar 包里的<br> <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> 文件中）</p>
+</li>
+<li><p>Spring Boot 会判断：</p>
+<ul>
+<li>哪些类在类路径里存在</li>
+<li>哪些 Bean 你自己没配</li>
+<li>哪些配置项在 <code>application.yml</code> 里定义了</li>
+</ul>
+<p>然后“有条件”地加载对应的配置。</p>
+</li>
+</ol>
+<hr>
+<h2 id="🎯-举个例子"><a href="#🎯-举个例子" class="headerlink" title="🎯 举个例子"></a>🎯 举个例子</h2><p><code>DataSourceAutoConfiguration</code>（数据库自动配置类）：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(DataSource.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(DataSource.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DataSourceAutoConfiguration</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> DataSource <span class="title function_">dataSource</span><span class="params">()</span> &#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>意思是：</p>
+<ul>
+<li>只有项目里有 <code>DataSource</code> 相关类，</li>
+<li>而且你没自己写 <code>DataSource</code> Bean，</li>
+<li>它才自动帮你创建一个默认的。</li>
+</ul>
+<hr>
+<h2 id="💡-小结"><a href="#💡-小结" class="headerlink" title="💡 小结"></a>💡 小结</h2><table>
+<thead>
+<tr>
+<th>关键点</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@SpringBootApplication</code></td>
+<td>启动入口</td>
+</tr>
+<tr>
+<td><code>@EnableAutoConfiguration</code></td>
+<td>启动自动配置功能</td>
+</tr>
+<tr>
+<td><code>@ConditionalOnXXX</code></td>
+<td>条件判断是否生效</td>
+</tr>
+<tr>
+<td><code>spring.factories</code> &#x2F; <code>AutoConfiguration.imports</code></td>
+<td>存放所有自动配置类列表</td>
+</tr>
+</tbody></table>
+<hr>
+]]></content>
+  </entry>
+  <entry>
+    <title>回溯法</title>
+    <url>/2025/11/06/%E5%9B%9E%E6%BA%AF%E6%B3%95/</url>
+    <content><![CDATA[<hr>
+<h2 id="1、理论基础"><a href="#1、理论基础" class="headerlink" title="1、理论基础"></a>1、理论基础</h2><p><strong>应用场景</strong></p>
+<ul>
+<li>组合问题：N个数里面按一定规则找出k个数的集合</li>
+<li>切割问题：一个字符串按一定规则有几种切割方式</li>
+<li>子集问题：一个N个数的集合里有多少符合条件的子集</li>
+<li>排列问题：N个数按一定规则全排列，有几种排列方式</li>
+<li>棋盘问题：N皇后，解数独等等</li>
+</ul>
+<p><strong>如何理解回溯法</strong></p>
+<ul>
+<li><p>回溯的本质是穷举，穷举所有可能，选出我们想要的答案</p>
+</li>
+<li><p>回溯法解决的问题都可抽象为树形结构</p>
+</li>
+<li><p>回溯法解决的问题都是在集合中递归查找子集</p>
+</li>
+<li><p>集合的大小构成了树的宽度，递归的深度构成树的深度</p>
+</li>
+<li><p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/20210130173631174.png" alt="回溯算法理论基础"></p>
+</li>
+<li><p>for循环可以理解是横向遍历，backtracking（递归）就是纵向遍历</p>
+</li>
+<li><p>模板：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">backtrack</span><span class="params">(参数)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (找到一个结果的终止条件) &#123;</span><br><span class="line">        存放单次结果;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (选择：本层集合中元素（树中节点孩子的数量就是集合的大小）) &#123;</span><br><span class="line">        处理节点/处理单次结果;</span><br><span class="line">        backtracking(路径，选择列表); <span class="comment">// 递归</span></span><br><span class="line">        回溯，撤销处理结果</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="2、lc77-组合"><a href="#2、lc77-组合" class="headerlink" title="2、lc77-组合"></a>2、lc77-组合</h2><p>原题链接：<a href="https://leetcode.cn/problems/combinations/">https://leetcode.cn/problems/combinations/</a></p>
+<ul>
+<li>回溯法用递归来解决嵌套for循环层数的问题</li>
+<li>每一次的递归中一个for循环，那么递归就可以用于解决多层嵌套循环的问题</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;Integer&gt; path = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">combine</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">        backtrack(n, k, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">backtrack</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> k, <span class="type">int</span> si)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(path.size() == k)&#123;</span><br><span class="line">            res.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(path));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> si; i &lt;= n; i++)&#123;</span><br><span class="line">            path.add(i);</span><br><span class="line">            backtrack(n, k, i + <span class="number">1</span>);</span><br><span class="line">            path.remove(Integer.valueOf(i));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>剪枝优化版</strong></p>
+<ul>
+<li>如果for循环选择的起始位置之后的元素个数 已经不足 我们需要的元素个数了，那么就没有必要搜索了。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    LinkedList&lt;Integer&gt; path = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">combine</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">        combineHelper(n, k, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 每次从集合中选取元素，可选择的范围随着选择的进行而收缩，调整可选择的范围，就是要靠startIndex</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> startIndex 用来记录本层递归的中，集合从哪里开始遍历（集合就是[1,...,n] ）。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">combineHelper</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> k, <span class="type">int</span> startIndex)</span>&#123;</span><br><span class="line">        <span class="comment">//终止条件</span></span><br><span class="line">        <span class="keyword">if</span> (path.size() == k)&#123;</span><br><span class="line">            result.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(path));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> startIndex; i &lt;= n - (k - path.size()) + <span class="number">1</span>; i++)&#123;</span><br><span class="line">            path.add(i);</span><br><span class="line">            combineHelper(n, k, i + <span class="number">1</span>);</span><br><span class="line">            path.remove(Integer.valueOf(i));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、lc46-全排列"><a href="#3、lc46-全排列" class="headerlink" title="3、lc46-全排列"></a>3、lc46-全排列</h2><p>组合无序，排列有序</p>
+<p><a href="https://leetcode.cn/problems/permutations/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/permutations/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<ul>
+<li>因为排列问题每次都要从头开始搜索（因为排列是有序的，这样才能得到所有排列的可能），因此可能会遍历到已使用过的元素（一个排列里一个元素只能使用一次）。而 <strong>used数组</strong> 就是拿来记录此时path里都有哪些元素使用了</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;Integer&gt; path = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="type">boolean</span>[] used;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">permute</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        used = <span class="keyword">new</span> <span class="title class_">boolean</span>[nums.length];</span><br><span class="line">        backtrack(nums);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">backtrack</span><span class="params">(<span class="type">int</span>[] nums)</span>&#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        <span class="keyword">if</span>(path.size() == n)&#123;</span><br><span class="line">            res.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(path));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(used[i]) <span class="keyword">continue</span>;</span><br><span class="line">            </span><br><span class="line">            used[i] = <span class="literal">true</span>;</span><br><span class="line">            path.add(nums[i]);</span><br><span class="line">            backtrack(nums);</span><br><span class="line">            path.remove(Integer.valueOf(nums[i]));</span><br><span class="line">            used[i] = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、lc78-子集"><a href="#4、lc78-子集" class="headerlink" title="4、lc78-子集"></a>4、lc78-子集</h2><p><a href="https://leetcode.cn/problems/subsets/description/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/subsets/description/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<ul>
+<li>组合问题和分割问题都是收集树的叶子节点，而子集问题是找树的所有节点</li>
+<li>无序，取过的元素不会重复取，写回溯算法的时候，for就要从startIndex开始，而不是从0开始</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();<span class="comment">// 存放符合条件结果的集合</span></span><br><span class="line">    List&lt;Integer&gt; path = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();<span class="comment">// 用来存放符合条件结果</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">subsets</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        subsetsHelper(nums, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">subsetsHelper</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> startIndex)</span>&#123;</span><br><span class="line">        result.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(path));<span class="comment">//「遍历这个树的时候，把所有节点都记录下来，就是要求的子集集合」。</span></span><br><span class="line">        <span class="keyword">if</span> (startIndex &gt;= nums.length)&#123; <span class="comment">//终止条件可不加</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> startIndex; i &lt; nums.length; i++)&#123;</span><br><span class="line">            path.add(nums[i]);</span><br><span class="line">            subsetsHelper(nums, i + <span class="number">1</span>);</span><br><span class="line">            path.remove(Integer.valueOf(i));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5、lc17-电话号码的字母组合"><a href="#5、lc17-电话号码的字母组合" class="headerlink" title="5、lc17-电话号码的字母组合"></a>5、lc17-电话号码的字母组合</h2><p><a href="https://leetcode.cn/problems/letter-combinations-of-a-phone-number/description/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/letter-combinations-of-a-phone-number/description/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<ul>
+<li>本题每一个数字代表的是不同集合，也就是求不同集合之间的组合，因此每次递归到下一层遍历都要从头开始（从 0 开始）遍历</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;String&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="type">StringBuilder</span> <span class="variable">path</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">    <span class="keyword">public</span> List&lt;String&gt; <span class="title function_">letterCombinations</span><span class="params">(String digits)</span> &#123;</span><br><span class="line">        Map&lt;Character, String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&#x27;2&#x27;</span>, <span class="string">&quot;abc&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&#x27;3&#x27;</span>, <span class="string">&quot;def&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&#x27;4&#x27;</span>, <span class="string">&quot;ghi&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&#x27;5&#x27;</span>, <span class="string">&quot;jkl&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&#x27;6&#x27;</span>, <span class="string">&quot;mno&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&#x27;7&#x27;</span>, <span class="string">&quot;pqrs&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&#x27;8&#x27;</span>, <span class="string">&quot;tuv&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&#x27;9&#x27;</span>, <span class="string">&quot;wxyz&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        backtrack(map, digits, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//sI表示遍历到哪个数字了</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">backtrack</span><span class="params">(Map&lt;Character, String&gt; map, String digits, <span class="type">int</span> sI)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(path.length() == digits.length())&#123;</span><br><span class="line">            res.add(path.toString());</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> map.get(digits.charAt(sI));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); i++)&#123;</span><br><span class="line">            path.append(s.charAt(i));</span><br><span class="line">            backtrack(map, digits, sI + <span class="number">1</span>);</span><br><span class="line">            path.deleteCharAt(path.length() - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6、lc39-组合总和"><a href="#6、lc39-组合总和" class="headerlink" title="6、lc39-组合总和"></a>6、lc39-组合总和</h2><p><a href="https://leetcode.cn/problems/combination-sum/solutions/406516/zu-he-zong-he-by-leetcode-solution/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/combination-sum/solutions/406516/zu-he-zong-he-by-leetcode-solution/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<ul>
+<li>组合问题：一个集合来求组合的话，就需要startIndex；多个集合取组合，就不用startIndex</li>
+<li>startIndex组合是无序的，虽然本题说明可以重复选取，但最多下一层只能从当前元素的位置开始（往前），绝对是不能从下标 0 开始的（往后重新开始），所以要用到startIndex</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    List&lt;Integer&gt; path = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">combinationSum</span><span class="params">(<span class="type">int</span>[] candidates, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">        backtrack(candidates, target, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">backtrack</span><span class="params">(<span class="type">int</span>[] candidates, <span class="type">int</span> target, <span class="type">int</span> sum, <span class="type">int</span> sI)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(sum == target)&#123;</span><br><span class="line">            res.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(path));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sum &gt; target) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> sI; i &lt; candidates.length; i++)&#123;</span><br><span class="line">            path.add(candidates[i]);</span><br><span class="line">            sum += candidates[i];</span><br><span class="line">            backtrack(candidates, target, sum, i); <span class="comment">//元素可重复选取，因此传入当前位置 i</span></span><br><span class="line">            sum -= candidates[i];</span><br><span class="line">            path.remove(path.size() - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="7、lc22-括号生成"><a href="#7、lc22-括号生成" class="headerlink" title="7、lc22-括号生成"></a>7、lc22-括号生成</h2><p><a href="https://leetcode.cn/problems/generate-parentheses/solutions/192912/gua-hao-sheng-cheng-by-leetcode-solution/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/generate-parentheses/solutions/192912/gua-hao-sheng-cheng-by-leetcode-solution/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103095323435.png" alt="image-20251103095323435"></p>
+<ul>
+<li>组合 &#x2F; 子集 &#x2F; 排列：同一层可以选择多个不同元素；括号生成：每一层只有两种固定决策：要么 <code>&#39;(&#39;</code> 要么 <code>&#39;)&#39;</code>，不需要for</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;String&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">	<span class="type">StringBuilder</span> <span class="variable">path</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">    <span class="keyword">public</span> List&lt;String&gt; <span class="title function_">generateParenthesis</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">        backtrack(n, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">backtrack</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> left, <span class="type">int</span> right)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (path.length() == <span class="number">2</span> * n) &#123;</span><br><span class="line">            res.add(path.toString());</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 可以放左括号</span></span><br><span class="line">        <span class="keyword">if</span> (left &lt; n) &#123;</span><br><span class="line">            path.append(<span class="string">&#x27;(&#x27;</span>);</span><br><span class="line">            backtrack(n, left + <span class="number">1</span>, right);</span><br><span class="line">            path.deleteCharAt(path.length() - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 可以放右括号</span></span><br><span class="line">        <span class="keyword">if</span> (right &lt; left) &#123;</span><br><span class="line">            path.append(<span class="string">&#x27;)&#x27;</span>);</span><br><span class="line">            backtrack(n, left, right + <span class="number">1</span>);</span><br><span class="line">            path.deleteCharAt(path.length() - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="8、lc79-单词搜索"><a href="#8、lc79-单词搜索" class="headerlink" title="8、lc79-单词搜索"></a>8、lc79-单词搜索</h2><p><a href="https://leetcode.cn/problems/word-search/description/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/word-search/description/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">exist</span><span class="params">(<span class="type">char</span>[][] board, String word)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> board.length, n = board[<span class="number">0</span>].length;</span><br><span class="line">        <span class="comment">// 遍历所有起点，只要有一个起点能匹配成功就返回 true</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (dfs(board, word, i, j, <span class="number">0</span>)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 深度优先搜索 + 回溯</span></span><br><span class="line">    <span class="comment">// k 表示当前匹配到 word 的第 k 个字符</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">dfs</span><span class="params">(<span class="type">char</span>[][] board, String word, <span class="type">int</span> i, <span class="type">int</span> j, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">        <span class="comment">// 越界判断 或 当前字符不匹配，直接返回 false</span></span><br><span class="line">        <span class="keyword">if</span> (i &lt; <span class="number">0</span> || i &gt;= board.length || j &lt; <span class="number">0</span> || j &gt;= board[<span class="number">0</span>].length </span><br><span class="line">            || board[i][j] != word.charAt(k)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="comment">// 若已匹配到最后一个字符，返回 true</span></span><br><span class="line">        <span class="keyword">if</span> (k == word.length() - <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">       </span><br><span class="line">        <span class="comment">// 临时标记当前格子为已访问，防止重复使用</span></span><br><span class="line">        <span class="type">char</span> <span class="variable">tmp</span> <span class="operator">=</span> board[i][j]; <span class="comment">//存下来以便回溯</span></span><br><span class="line">        board[i][j] = <span class="string">&#x27;#&#x27;</span>;  <span class="comment">// &#x27;#&#x27; 表示该格子已用过</span></span><br><span class="line">        <span class="comment">// 四个方向继续搜索</span></span><br><span class="line">        <span class="type">boolean</span> <span class="variable">found</span> <span class="operator">=</span> dfs(board, word, i + <span class="number">1</span>, j, k + <span class="number">1</span>) ||</span><br><span class="line">                        dfs(board, word, i - <span class="number">1</span>, j, k + <span class="number">1</span>) ||</span><br><span class="line">                        dfs(board, word, i, j + <span class="number">1</span>, k + <span class="number">1</span>) ||</span><br><span class="line">                        dfs(board, word, i, j - <span class="number">1</span>, k + <span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 回溯：恢复当前格子的原值</span></span><br><span class="line">        board[i][j] = tmp;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> found;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="9、lc131-分割回文串"><a href="#9、lc131-分割回文串" class="headerlink" title="9、lc131-分割回文串"></a>9、lc131-分割回文串</h2><p><a href="https://leetcode.cn/problems/palindrome-partitioning/description/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/palindrome-partitioning/description/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//回溯 + 普通判断回文串</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;List&lt;String&gt;&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    List&lt;String&gt; path = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="title function_">partition</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        backtrack(s, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">backtrack</span><span class="params">(String s, <span class="type">int</span> sI)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(sI &gt;= s.length())&#123;</span><br><span class="line">            res.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(path));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>(); <span class="comment">//每层递归都单独有一个</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> sI; i &lt; s.length(); i++)&#123;</span><br><span class="line">            sb.append(s.charAt(i)); <span class="comment">//每层递归都有自己独立的sb，因此不用撤销，撤销没影响主要是，你撤销撤销的是当层的sb，但是你回到上一层时又是上一层它自己独立的新的sb，因此只有path才有撤销的必要</span></span><br><span class="line">            <span class="keyword">if</span>(isPalin(sb)&#123;</span><br><span class="line">                path.add(sb.toString());</span><br><span class="line">                backtrack(s, i + <span class="number">1</span>);</span><br><span class="line">                path.remove(path.size() - <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isPalin</span><span class="params">(StringBuilder sb)</span>&#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">l</span> <span class="operator">=</span> <span class="number">0</span>, r = sb.length() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(l &lt; r)&#123;</span><br><span class="line">            <span class="keyword">if</span>(sb.charAt(l) != sb.charAt(r)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            l++;</span><br><span class="line">            r--;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//回溯 + 动规判断回文</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;List&lt;String&gt;&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    LinkedList&lt;String&gt; path = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;(); <span class="comment">//链表增删效率更高</span></span><br><span class="line">    <span class="type">boolean</span>[][] dp; <span class="comment">// 下标从 i 到 j 的子串是否是回文</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="title function_">partition</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        dp = <span class="keyword">new</span> <span class="title class_">boolean</span>[s.length() + <span class="number">1</span>][s.length() + <span class="number">1</span>]; <span class="comment">// 多开一行一列保险</span></span><br><span class="line">        <span class="type">char</span>[] str = s.toCharArray();</span><br><span class="line">        isPalindrome(str); <span class="comment">// 先预处理，判断好所有子串是否是回文</span></span><br><span class="line">        backtrack(s, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">backtrack</span><span class="params">(String s, <span class="type">int</span> sI)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(sI &gt;= s.length())&#123;</span><br><span class="line">            res.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(path));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> sI; i &lt; s.length(); i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(dp[sI][i])&#123;</span><br><span class="line">                path.addLast(s.substring(sI, i + <span class="number">1</span>));</span><br><span class="line">                backtrack(s, i + <span class="number">1</span>);</span><br><span class="line">                path.pollLast();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">isPalindrome</span><span class="params">(<span class="type">char</span>[] str)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> str.length;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++)&#123; <span class="comment">//单个字符一定是回文</span></span><br><span class="line">            dp[i][i] = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; n; i++)&#123; <span class="comment">// i从 1 往右走</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--)&#123; <span class="comment">// j 从 i 的左边一个位置一直往左走</span></span><br><span class="line">                <span class="keyword">if</span>(str[i] == str[j])&#123;</span><br><span class="line">                    <span class="keyword">if</span>(i - j == <span class="number">1</span>)&#123; <span class="comment">// 相等且紧邻时</span></span><br><span class="line">                        dp[j][i] = <span class="literal">true</span>;</span><br><span class="line">                    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(dp[j + <span class="number">1</span>][i - <span class="number">1</span>])&#123; <span class="comment">// 相等且内子串为回文时</span></span><br><span class="line">                        dp[j][i] = <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="10、lc51-N皇后"><a href="#10、lc51-N皇后" class="headerlink" title="10、lc51-N皇后"></a>10、lc51-N皇后</h2><p><a href="https://leetcode.cn/problems/n-queens/description/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/n-queens/description/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<ul>
+<li>棋盘的宽度就是for循环的长度，递归的深度就是棋盘的高度</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;List&lt;String&gt;&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="type">char</span>[][] board;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="title function_">solveNQueens</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">        board = <span class="keyword">new</span> <span class="title class_">char</span>[n][n];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span>[] c : board)&#123; <span class="comment">//初始化棋盘</span></span><br><span class="line">            Arrays.fill(c, <span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        backtrack(n, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">backtrack</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> row)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(row &gt;= n)&#123;</span><br><span class="line">            res.add(array2List(board));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(isValid(board, row, i))&#123; <span class="comment">//先判断这个位置能不能放 Q</span></span><br><span class="line">                board[row][i] = <span class="string">&#x27;Q&#x27;</span>;</span><br><span class="line">                backtrack(n, row + <span class="number">1</span>);</span><br><span class="line">                board[row][i] = <span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;String&gt; <span class="title function_">array2List</span><span class="params">(<span class="type">char</span>[][] board)</span>&#123;</span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span>[] c : board)&#123;</span><br><span class="line">            list.add(String.copyValueOf(c));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注意别搞混行列</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValid</span><span class="params">(<span class="type">char</span>[][] board, <span class="type">int</span> row, <span class="type">int</span> col)</span>&#123; <span class="comment">//只需往“上”检查</span></span><br><span class="line">        <span class="comment">//检查列</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> row - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">            <span class="keyword">if</span>(board[i][col] == <span class="string">&#x27;Q&#x27;</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//检查上半部分主对角线</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> row - <span class="number">1</span>, j = col - <span class="number">1</span>; i &gt;= <span class="number">0</span> &amp;&amp; j &gt;= <span class="number">0</span>; i--, j--)&#123;</span><br><span class="line">            <span class="keyword">if</span>(board[i][j] == <span class="string">&#x27;Q&#x27;</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//检查上半部分副对角线</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> row - <span class="number">1</span>, j = col + <span class="number">1</span>; i &gt;= <span class="number">0</span> &amp;&amp; j &lt; board[<span class="number">0</span>].length; i--, j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(board[i][j] == <span class="string">&#x27;Q&#x27;</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比</title>
+    <url>/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/</url>
+    <content><![CDATA[<hr>
+<p><code>ReturnCallback</code> 和 <code>ConfirmCallback</code> 是在使用 Spring AMQP（Spring Data RabbitMQ）框架时，对标准 RabbitMQ 客户端的 <code>ReturnListener</code> 和 <code>ConfirmListener</code> 机制进行的高级封装。</p>
+<p>它们是 Spring Boot&#x2F;Spring Cloud 应用中实现消息可靠性的<strong>核心接口</strong>。</p>
+<hr>
+<h3 id="1-🔄-ConfirmCallback-对应-Publisher-Confirms"><a href="#1-🔄-ConfirmCallback-对应-Publisher-Confirms" class="headerlink" title="1. 🔄 ConfirmCallback (对应 Publisher Confirms)"></a>1. 🔄 ConfirmCallback (对应 Publisher Confirms)</h3><p><code>ConfirmCallback</code> 接口用于处理 <strong>生产者确认（Publisher Confirms）</strong> 的结果。它告诉生产者消息是否已被 RabbitMQ Broker 成功接收。</p>
+<h4 id="关注点"><a href="#关注点" class="headerlink" title="关注点"></a>关注点</h4><ul>
+<li><strong>关注阶段：</strong> 生产者 $\rightarrow$ Broker。</li>
+<li><strong>如何使用：</strong> 将该回调实现类加到 <code>correlationData</code> 的<code>future</code>中（每次发消息都要指定，因此一般是写在业务代码中）。</li>
+<li><strong>核心逻辑：</strong><ul>
+<li>如果 <code>ack</code> 为 <code>true</code>：表示消息安全到达 Broker，可以从重发队列或内存中移除这条消息。</li>
+<li>如果 <code>ack</code> 为 <code>false</code>：表示消息未能被 Broker 接收（通常是网络问题或 Broker 内部错误），需要根据 <code>correlationData</code> 尝试<strong>重发</strong>或记录失败日志。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="2-↩️-ReturnCallback-对应-Publisher-Returns"><a href="#2-↩️-ReturnCallback-对应-Publisher-Returns" class="headerlink" title="2. ↩️ ReturnCallback (对应 Publisher Returns)"></a>2. ↩️ ReturnCallback (对应 Publisher Returns)</h3><p><code>ReturnCallback</code> 接口用于处理 <strong>生产者返回（Publisher Returns）</strong> 的事件。它告诉生产者消息虽然被 Broker 接收了，但 Exchange 无法将其路由到任何队列。</p>
+<h4 id="关注点-1"><a href="#关注点-1" class="headerlink" title="关注点"></a>关注点</h4><ul>
+<li><strong>关注阶段：</strong> Exchange $\rightarrow$ Queue。</li>
+<li><strong>如何使用：</strong> 将该回调实现类注入到 Spring 的 <code>RabbitTemplate</code> 中（只能配置一个，配置类中配置）</li>
+<li><strong>核心逻辑：</strong><ul>
+<li>该回调方法被调用，意味着<strong>消息已丢失</strong>（无法被消费者获取）。</li>
+<li>生产者应检查 <code>replyText</code> 和 <code>routingKey</code>，通常需要记录详细日志，然后将 <code>message</code> <strong>重新发送</strong>到备用 Exchange 或人工处理队列，以防止数据丢失。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="📊-总结对比-Spring-AMQP-视角"><a href="#📊-总结对比-Spring-AMQP-视角" class="headerlink" title="📊 总结对比 (Spring AMQP 视角)"></a>📊 总结对比 (Spring AMQP 视角)</h3><table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>ConfirmCallback</strong></th>
+<th><strong>ReturnCallback</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>底层对应</strong></td>
+<td>Publisher Confirms (Ack&#x2F;Nack)</td>
+<td>Publisher Returns</td>
+</tr>
+<tr>
+<td><strong>何时触发</strong></td>
+<td>消息被 <strong>Broker 接收&#x2F;拒绝</strong> 时</td>
+<td>消息被 <strong>Exchange 接收</strong> 且 <strong>无法路由</strong> 到任何队列时</td>
+</tr>
+<tr>
+<td><strong>关注重点</strong></td>
+<td><strong>接收的安全性</strong></td>
+<td><strong>路由的准确性</strong></td>
+</tr>
+<tr>
+<td><strong>核心参数</strong></td>
+<td><code>ack</code> (布尔值) 和 <code>cause(reason)</code></td>
+<td><code>message</code> 和 <code>replyCode</code>&#x2F;<code>replyText</code></td>
+</tr>
+<tr>
+<td><strong>典型处理</strong></td>
+<td>Ack: 清除记录；Nack: <strong>重发</strong>消息</td>
+<td>记录日志并决定是否 <strong>重新路由</strong></td>
+</tr>
+</tbody></table>
+<p><strong>重要提示：</strong></p>
+<p>在 Spring AMQP 中，这两个回调函数是实现<strong>端到端可靠性</strong>的黄金搭档。它们使业务逻辑能够清晰地处理消息发送过程中的所有异常情况。</p>
+<p><strong>使用步骤</strong>：</p>
+<p>1.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162446530.png" alt="image-20251105162446530"></p>
+<p>2.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162521843.png" alt="image-20251105162521843"></p>
+<ol start="3">
+<li></li>
+</ol>
+<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162550437.png" alt="image-20251105162550437"></p>
+<p>！<strong>但是以上机制都一般不会开启</strong></p>
+]]></content>
+  </entry>
+  <entry>
     <title>虚拟机中的 MySQL 3306端口被占用、mysql Docker 容器无法自启</title>
-    <url>/blog/2025/10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/</url>
+    <url>/2025/10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/</url>
     <content><![CDATA[<hr>
 <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a><strong>问题背景</strong></h2><ul>
 <li>虚拟机上手动安装的 MySQL (<code>/usr/local/mysql/bin/mysqld</code>) 占用 3306</li>
