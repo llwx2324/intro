@@ -9,7 +9,7 @@
   <meta name="description" content="Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比">
-<meta property="og:url" content="https://lwx-blog.pages.dev/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/index.html">
+<meta property="og:url" content="https://llwx2324.github.io/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/index.html">
 <meta property="og:site_name" content="刘文鑫-个人博客">
 <meta property="og:description" content="Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比。">
 <meta property="og:locale" content="en_US">
@@ -22,24 +22,24 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162446530.png">
   
-    <link rel="alternate" href="/atom.xml" title="刘文鑫-个人博客" type="application/atom+xml">
+    <link rel="alternate" href="/blog/atom.xml" title="刘文鑫-个人博客" type="application/atom+xml">
   
   
-    <link rel="shortcut icon" href="/css/images/L-logo-transparent.png">
+    <link rel="shortcut icon" href="/blog/css/images/L-logo-transparent.png">
   
   
   
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/blog/css/style.css">
 
   
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.min.css">
 
   
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<meta name="generator" content="Hexo 8.0.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.0.0"><link rel="stylesheet" href="/blog/css/prism.css" type="text/css"></head>
 
 <body>
   <div id="container">
@@ -49,11 +49,11 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">刘文鑫</a>
+        <a href="/blog/" id="logo">刘文鑫</a>
       </h1>
       
         <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">记录与分享</a>
+          <a href="/blog/" id="subtitle">记录与分享</a>
         </h2>
       
     </div>
@@ -61,11 +61,11 @@
       <nav id="main-nav">
         <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a class="main-nav-link" href="/blog/">Home</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
         
-          <a class="main-nav-link" href="/about">About</a>
+          <a class="main-nav-link" href="/blog/about">About</a>
         
       </nav>
       <nav id="sub-nav">
@@ -92,7 +92,7 @@
       <div class="outer">
         <section id="main"><article id="post-Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/" class="article-date">
+    <a href="/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/" class="article-date">
   <time class="dt-published" datetime="2025-11-05T09:00:00.000Z" itemprop="datePublished">2025-11-05</time>
 </a>
     
@@ -186,7 +186,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lwx-blog.pages.dev/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/" data-id="cuidGgK-tZWta_IyDxx4mVQWU" data-title="Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://llwx2324.github.io/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/" data-id="cuid4OPmNxcI4w6aF7POH_eGG" data-title="Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -196,7 +196,7 @@
     
 <nav id="article-nav">
   
-    <a href="/2025/11/06/%E5%9B%9E%E6%BA%AF%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/blog/2025/11/06/%E5%9B%9E%E6%BA%AF%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
@@ -206,7 +206,7 @@
     </a>
   
   
-    <a href="/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/blog/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">Gemini CLI无法登录的问题</div>
     </a>
@@ -228,7 +228,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">November 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">October 2025</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2025/11/">November 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2025/10/">October 2025</a></li></ul>
     </div>
   </div>
 
@@ -241,23 +241,23 @@
       <ul>
         
           <li>
-            <a href="/2025/11/06/%E5%9B%9E%E6%BA%AF%E6%B3%95/">回溯法</a>
+            <a href="/blog/2025/11/06/%E5%9B%9E%E6%BA%AF%E6%B3%95/">回溯法</a>
           </li>
         
           <li>
-            <a href="/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/">Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比</a>
+            <a href="/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/">Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比</a>
           </li>
         
           <li>
-            <a href="/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/">Gemini CLI无法登录的问题</a>
+            <a href="/blog/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/">Gemini CLI无法登录的问题</a>
           </li>
         
           <li>
-            <a href="/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/">Docker常用命令</a>
+            <a href="/blog/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/">Docker常用命令</a>
           </li>
         
           <li>
-            <a href="/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">SpringBoot的自动装配</a>
+            <a href="/blog/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">SpringBoot的自动装配</a>
           </li>
         
       </ul>
@@ -282,32 +282,32 @@
     </div>
     <nav id="mobile-nav">
   
-    <a href="/" class="mobile-nav-link">Home</a>
+    <a href="/blog/" class="mobile-nav-link">Home</a>
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
   
-    <a href="/about" class="mobile-nav-link">About</a>
+    <a href="/blog/about" class="mobile-nav-link">About</a>
   
 </nav>
     
 
 
-<script src="/js/jquery-3.6.4.min.js"></script>
+<script src="/blog/js/jquery-3.6.4.min.js"></script>
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+<script src="/blog/fancybox/jquery.fancybox.min.js"></script>
 
 
 
 
-<script src="/js/script.js"></script>
+<script src="/blog/js/script.js"></script>
 
 
 
 
-<script src="/js/search.js" data-root="/"></script>
+<script src="/blog/js/search.js" data-root="/blog/"></script>
 
 
   </div>

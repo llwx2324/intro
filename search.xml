@@ -1,22 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Gemini CLI无法登录的问题</title>
-    <url>/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<hr>
-<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195828642.png" alt="image-20251103195828642"></p>
-<p>以下是我成功登入的过程：</p>
-<p>初步检查</p>
-<p>我已开启 Clash 的 TUN 模式，并配置了相关环境变量。</p>
-<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195843175.png" alt="image-20251103195843175"></p>
-<p>为了验证代理是否生效，我在管理员权限的 PowerShell 中执行 netsh winhttp show proxy，发现输出仍为 直接访问（没有代理服务器），说明系统代理未正确设置。<br>手动配置代理</p>
-<p>于是，我通过命令 netsh winhttp set proxy 127.0.0.1:7890 手动设置了 WinHTTP 代理。<br>再次执行 netsh winhttp show proxy，确认代理已生效：<br>代理服务器: 127.0.0.1:7890<br>绕过列表: (无)<br>结果</p>
-<p>完成代理配置后，重新启动 Gemini，问题解决，服务成功运行。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>Docker常用命令</title>
-    <url>/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/</url>
+    <url>/blog/2025/10/30/Docker%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/</url>
     <content><![CDATA[<hr>
 <blockquote>
 <p>适用于 CentOS 7 &#x2F; Ubuntu &#x2F; Mac &#x2F; Windows 等环境<br>Docker 版本：18.x ~ 27.x 通用</p>
@@ -391,8 +377,97 @@ docker system prune -a -f
 ]]></content>
   </entry>
   <entry>
+    <title>Gemini CLI无法登录的问题</title>
+    <url>/blog/2025/11/03/Gemini%20CLI%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<hr>
+<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195828642.png" alt="image-20251103195828642"></p>
+<p>以下是我成功登入的过程：</p>
+<p>初步检查</p>
+<p>我已开启 Clash 的 TUN 模式，并配置了相关环境变量。</p>
+<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251103195843175.png" alt="image-20251103195843175"></p>
+<p>为了验证代理是否生效，我在管理员权限的 PowerShell 中执行 netsh winhttp show proxy，发现输出仍为 直接访问（没有代理服务器），说明系统代理未正确设置。<br>手动配置代理</p>
+<p>于是，我通过命令 netsh winhttp set proxy 127.0.0.1:7890 手动设置了 WinHTTP 代理。<br>再次执行 netsh winhttp show proxy，确认代理已生效：<br>代理服务器: 127.0.0.1:7890<br>绕过列表: (无)<br>结果</p>
+<p>完成代理配置后，重新启动 Gemini，问题解决，服务成功运行。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比</title>
+    <url>/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/</url>
+    <content><![CDATA[<hr>
+<p><code>ReturnCallback</code> 和 <code>ConfirmCallback</code> 是在使用 Spring AMQP（Spring Data RabbitMQ）框架时，对标准 RabbitMQ 客户端的 <code>ReturnListener</code> 和 <code>ConfirmListener</code> 机制进行的高级封装。</p>
+<p>它们是 Spring Boot&#x2F;Spring Cloud 应用中实现消息可靠性的<strong>核心接口</strong>。</p>
+<hr>
+<h3 id="1-🔄-ConfirmCallback-对应-Publisher-Confirms"><a href="#1-🔄-ConfirmCallback-对应-Publisher-Confirms" class="headerlink" title="1. 🔄 ConfirmCallback (对应 Publisher Confirms)"></a>1. 🔄 ConfirmCallback (对应 Publisher Confirms)</h3><p><code>ConfirmCallback</code> 接口用于处理 <strong>生产者确认（Publisher Confirms）</strong> 的结果。它告诉生产者消息是否已被 RabbitMQ Broker 成功接收。</p>
+<h4 id="关注点"><a href="#关注点" class="headerlink" title="关注点"></a>关注点</h4><ul>
+<li><strong>关注阶段：</strong> 生产者 $\rightarrow$ Broker。</li>
+<li><strong>如何使用：</strong> 将该回调实现类加到 <code>correlationData</code> 的<code>future</code>中（每次发消息都要指定，因此一般是写在业务代码中）。</li>
+<li><strong>核心逻辑：</strong><ul>
+<li>如果 <code>ack</code> 为 <code>true</code>：表示消息安全到达 Broker，可以从重发队列或内存中移除这条消息。</li>
+<li>如果 <code>ack</code> 为 <code>false</code>：表示消息未能被 Broker 接收（通常是网络问题或 Broker 内部错误），需要根据 <code>correlationData</code> 尝试<strong>重发</strong>或记录失败日志。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="2-↩️-ReturnCallback-对应-Publisher-Returns"><a href="#2-↩️-ReturnCallback-对应-Publisher-Returns" class="headerlink" title="2. ↩️ ReturnCallback (对应 Publisher Returns)"></a>2. ↩️ ReturnCallback (对应 Publisher Returns)</h3><p><code>ReturnCallback</code> 接口用于处理 <strong>生产者返回（Publisher Returns）</strong> 的事件。它告诉生产者消息虽然被 Broker 接收了，但 Exchange 无法将其路由到任何队列。</p>
+<h4 id="关注点-1"><a href="#关注点-1" class="headerlink" title="关注点"></a>关注点</h4><ul>
+<li><strong>关注阶段：</strong> Exchange $\rightarrow$ Queue。</li>
+<li><strong>如何使用：</strong> 将该回调实现类注入到 Spring 的 <code>RabbitTemplate</code> 中（只能配置一个，配置类中配置）</li>
+<li><strong>核心逻辑：</strong><ul>
+<li>该回调方法被调用，意味着<strong>消息已丢失</strong>（无法被消费者获取）。</li>
+<li>生产者应检查 <code>replyText</code> 和 <code>routingKey</code>，通常需要记录详细日志，然后将 <code>message</code> <strong>重新发送</strong>到备用 Exchange 或人工处理队列，以防止数据丢失。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="📊-总结对比-Spring-AMQP-视角"><a href="#📊-总结对比-Spring-AMQP-视角" class="headerlink" title="📊 总结对比 (Spring AMQP 视角)"></a>📊 总结对比 (Spring AMQP 视角)</h3><table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>ConfirmCallback</strong></th>
+<th><strong>ReturnCallback</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>底层对应</strong></td>
+<td>Publisher Confirms (Ack&#x2F;Nack)</td>
+<td>Publisher Returns</td>
+</tr>
+<tr>
+<td><strong>何时触发</strong></td>
+<td>消息被 <strong>Broker 接收&#x2F;拒绝</strong> 时</td>
+<td>消息被 <strong>Exchange 接收</strong> 且 <strong>无法路由</strong> 到任何队列时</td>
+</tr>
+<tr>
+<td><strong>关注重点</strong></td>
+<td><strong>接收的安全性</strong></td>
+<td><strong>路由的准确性</strong></td>
+</tr>
+<tr>
+<td><strong>核心参数</strong></td>
+<td><code>ack</code> (布尔值) 和 <code>cause(reason)</code></td>
+<td><code>message</code> 和 <code>replyCode</code>&#x2F;<code>replyText</code></td>
+</tr>
+<tr>
+<td><strong>典型处理</strong></td>
+<td>Ack: 清除记录；Nack: <strong>重发</strong>消息</td>
+<td>记录日志并决定是否 <strong>重新路由</strong></td>
+</tr>
+</tbody></table>
+<p><strong>重要提示：</strong></p>
+<p>在 Spring AMQP 中，这两个回调函数是实现<strong>端到端可靠性</strong>的黄金搭档。它们使业务逻辑能够清晰地处理消息发送过程中的所有异常情况。</p>
+<p><strong>使用步骤</strong>：</p>
+<p>1.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162446530.png" alt="image-20251105162446530"></p>
+<p>2.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162521843.png" alt="image-20251105162521843"></p>
+<ol start="3">
+<li></li>
+</ol>
+<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162550437.png" alt="image-20251105162550437"></p>
+<p>！<strong>但是以上机制都一般不会开启</strong></p>
+]]></content>
+  </entry>
+  <entry>
     <title>Stream流</title>
-    <url>/2025/10/19/Stream%E6%B5%81/</url>
+    <url>/blog/2025/10/19/Stream%E6%B5%81/</url>
     <content><![CDATA[<h2 id="🧩-一、Stream-是什么？"><a href="#🧩-一、Stream-是什么？" class="headerlink" title="🧩 一、Stream 是什么？"></a>🧩 一、Stream 是什么？</h2><blockquote>
 <p><strong>Stream（流）</strong> 是对集合（或数组）中元素的一种”高级遍历与处理方式”。</p>
 </blockquote>
@@ -598,7 +673,7 @@ docker system prune -a -f
   </entry>
   <entry>
     <title>SpringBoot的自动装配</title>
-    <url>/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/</url>
+    <url>/blog/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/</url>
     <content><![CDATA[<hr>
 <h2 id="🌱-什么是自动装配"><a href="#🌱-什么是自动装配" class="headerlink" title="🌱 什么是自动装配"></a>🌱 什么是自动装配</h2><p>Spring Boot 的自动装配就是：</p>
 <blockquote>
@@ -673,7 +748,7 @@ docker system prune -a -f
   </entry>
   <entry>
     <title>回溯法</title>
-    <url>/2025/11/06/%E5%9B%9E%E6%BA%AF%E6%B3%95/</url>
+    <url>/blog/2025/11/06/%E5%9B%9E%E6%BA%AF%E6%B3%95/</url>
     <content><![CDATA[<hr>
 <h2 id="1、理论基础"><a href="#1、理论基础" class="headerlink" title="1、理论基础"></a>1、理论基础</h2><p><strong>应用场景</strong></p>
 <ul>
@@ -764,83 +839,8 @@ docker system prune -a -f
 ]]></content>
   </entry>
   <entry>
-    <title>Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比</title>
-    <url>/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/</url>
-    <content><![CDATA[<hr>
-<p><code>ReturnCallback</code> 和 <code>ConfirmCallback</code> 是在使用 Spring AMQP（Spring Data RabbitMQ）框架时，对标准 RabbitMQ 客户端的 <code>ReturnListener</code> 和 <code>ConfirmListener</code> 机制进行的高级封装。</p>
-<p>它们是 Spring Boot&#x2F;Spring Cloud 应用中实现消息可靠性的<strong>核心接口</strong>。</p>
-<hr>
-<h3 id="1-🔄-ConfirmCallback-对应-Publisher-Confirms"><a href="#1-🔄-ConfirmCallback-对应-Publisher-Confirms" class="headerlink" title="1. 🔄 ConfirmCallback (对应 Publisher Confirms)"></a>1. 🔄 ConfirmCallback (对应 Publisher Confirms)</h3><p><code>ConfirmCallback</code> 接口用于处理 <strong>生产者确认（Publisher Confirms）</strong> 的结果。它告诉生产者消息是否已被 RabbitMQ Broker 成功接收。</p>
-<h4 id="关注点"><a href="#关注点" class="headerlink" title="关注点"></a>关注点</h4><ul>
-<li><strong>关注阶段：</strong> 生产者 $\rightarrow$ Broker。</li>
-<li><strong>如何使用：</strong> 将该回调实现类加到 <code>correlationData</code> 的<code>future</code>中（每次发消息都要指定，因此一般是写在业务代码中）。</li>
-<li><strong>核心逻辑：</strong><ul>
-<li>如果 <code>ack</code> 为 <code>true</code>：表示消息安全到达 Broker，可以从重发队列或内存中移除这条消息。</li>
-<li>如果 <code>ack</code> 为 <code>false</code>：表示消息未能被 Broker 接收（通常是网络问题或 Broker 内部错误），需要根据 <code>correlationData</code> 尝试<strong>重发</strong>或记录失败日志。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="2-↩️-ReturnCallback-对应-Publisher-Returns"><a href="#2-↩️-ReturnCallback-对应-Publisher-Returns" class="headerlink" title="2. ↩️ ReturnCallback (对应 Publisher Returns)"></a>2. ↩️ ReturnCallback (对应 Publisher Returns)</h3><p><code>ReturnCallback</code> 接口用于处理 <strong>生产者返回（Publisher Returns）</strong> 的事件。它告诉生产者消息虽然被 Broker 接收了，但 Exchange 无法将其路由到任何队列。</p>
-<h4 id="关注点-1"><a href="#关注点-1" class="headerlink" title="关注点"></a>关注点</h4><ul>
-<li><strong>关注阶段：</strong> Exchange $\rightarrow$ Queue。</li>
-<li><strong>如何使用：</strong> 将该回调实现类注入到 Spring 的 <code>RabbitTemplate</code> 中（只能配置一个，配置类中配置）</li>
-<li><strong>核心逻辑：</strong><ul>
-<li>该回调方法被调用，意味着<strong>消息已丢失</strong>（无法被消费者获取）。</li>
-<li>生产者应检查 <code>replyText</code> 和 <code>routingKey</code>，通常需要记录详细日志，然后将 <code>message</code> <strong>重新发送</strong>到备用 Exchange 或人工处理队列，以防止数据丢失。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="📊-总结对比-Spring-AMQP-视角"><a href="#📊-总结对比-Spring-AMQP-视角" class="headerlink" title="📊 总结对比 (Spring AMQP 视角)"></a>📊 总结对比 (Spring AMQP 视角)</h3><table>
-<thead>
-<tr>
-<th><strong>特性</strong></th>
-<th><strong>ConfirmCallback</strong></th>
-<th><strong>ReturnCallback</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>底层对应</strong></td>
-<td>Publisher Confirms (Ack&#x2F;Nack)</td>
-<td>Publisher Returns</td>
-</tr>
-<tr>
-<td><strong>何时触发</strong></td>
-<td>消息被 <strong>Broker 接收&#x2F;拒绝</strong> 时</td>
-<td>消息被 <strong>Exchange 接收</strong> 且 <strong>无法路由</strong> 到任何队列时</td>
-</tr>
-<tr>
-<td><strong>关注重点</strong></td>
-<td><strong>接收的安全性</strong></td>
-<td><strong>路由的准确性</strong></td>
-</tr>
-<tr>
-<td><strong>核心参数</strong></td>
-<td><code>ack</code> (布尔值) 和 <code>cause(reason)</code></td>
-<td><code>message</code> 和 <code>replyCode</code>&#x2F;<code>replyText</code></td>
-</tr>
-<tr>
-<td><strong>典型处理</strong></td>
-<td>Ack: 清除记录；Nack: <strong>重发</strong>消息</td>
-<td>记录日志并决定是否 <strong>重新路由</strong></td>
-</tr>
-</tbody></table>
-<p><strong>重要提示：</strong></p>
-<p>在 Spring AMQP 中，这两个回调函数是实现<strong>端到端可靠性</strong>的黄金搭档。它们使业务逻辑能够清晰地处理消息发送过程中的所有异常情况。</p>
-<p><strong>使用步骤</strong>：</p>
-<p>1.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162446530.png" alt="image-20251105162446530"></p>
-<p>2.<img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162521843.png" alt="image-20251105162521843"></p>
-<ol start="3">
-<li></li>
-</ol>
-<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162550437.png" alt="image-20251105162550437"></p>
-<p>！<strong>但是以上机制都一般不会开启</strong></p>
-]]></content>
-  </entry>
-  <entry>
     <title>虚拟机中的 MySQL 3306端口被占用、mysql Docker 容器无法自启</title>
-    <url>/2025/10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/</url>
+    <url>/blog/2025/10/21/%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E7%9A%84%20MySQL%203306%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E3%80%81mysql%20Docker%20%E5%AE%B9%E5%99%A8%E6%97%A0%E6%B3%95%E8%87%AA%E5%90%AF/</url>
     <content><![CDATA[<hr>
 <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a><strong>问题背景</strong></h2><ul>
 <li>虚拟机上手动安装的 MySQL (<code>/usr/local/mysql/bin/mysqld</code>) 占用 3306</li>
