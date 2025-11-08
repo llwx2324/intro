@@ -391,6 +391,230 @@ docker system prune -a -f
 ]]></content>
   </entry>
   <entry>
+    <title>Maven 核心知识体系</title>
+    <url>/blog/2025/11/08/Maven%20%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/</url>
+    <content><![CDATA[<hr>
+<hr>
+<h2 id="1️⃣-Maven-基本概念"><a href="#1️⃣-Maven-基本概念" class="headerlink" title="1️⃣ Maven 基本概念"></a>1️⃣ Maven 基本概念</h2><ul>
+<li><strong>Maven</strong> 是一个项目管理和构建工具，用于：<ol>
+<li><strong>依赖管理</strong>（自动下载 jar 包及传递依赖）</li>
+<li><strong>项目构建</strong>（编译、打包、测试、部署）</li>
+<li><strong>生命周期管理</strong>（规范化构建流程）</li>
+</ol>
+</li>
+<li><strong>核心文件</strong>：<code>pom.xml</code><ul>
+<li>描述项目的 <strong>坐标</strong>（groupId、artifactId、version）</li>
+<li>声明 <strong>依赖</strong>、<strong>插件</strong>、<strong>模块</strong> 等</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2️⃣-Maven-坐标"><a href="#2️⃣-Maven-坐标" class="headerlink" title="2️⃣ Maven 坐标"></a>2️⃣ Maven 坐标</h2><table>
+<thead>
+<tr>
+<th>坐标</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>groupId</td>
+<td>组织或公司标识，如 <code>com.yehai</code></td>
+</tr>
+<tr>
+<td>artifactId</td>
+<td>项目名或模块名，如 <code>common</code></td>
+</tr>
+<tr>
+<td>version</td>
+<td>项目版本，如 <code>1.0.0</code></td>
+</tr>
+<tr>
+<td>packaging</td>
+<td>打包类型：<code>jar</code>、<code>war</code>、<code>pom</code> 等</td>
+</tr>
+</tbody></table>
+<ul>
+<li>父子模块关系：<ul>
+<li>父 POM 用 <code>&lt;packaging&gt;pom&lt;/packaging&gt;</code> 管理多个子模块</li>
+<li>子模块通过 <code>&lt;parent&gt;</code> 引用父 POM</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3️⃣-依赖管理"><a href="#3️⃣-依赖管理" class="headerlink" title="3️⃣ 依赖管理"></a>3️⃣ 依赖管理</h2><h3 id="依赖声明"><a href="#依赖声明" class="headerlink" title="依赖声明"></a>依赖声明</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.7.18<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>作用域 (scope)</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>scope</th>
+<th>编译时</th>
+<th>运行时</th>
+<th>打包</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>compile</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>默认，核心依赖</td>
+</tr>
+<tr>
+<td>provided</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>容器&#x2F;环境提供，如 servlet-api</td>
+</tr>
+<tr>
+<td>runtime</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+<td>仅运行时依赖，如 JDBC driver</td>
+</tr>
+<tr>
+<td>test</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>测试依赖，如 JUnit</td>
+</tr>
+<tr>
+<td>system</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+<td>本地 jar，不推荐</td>
+</tr>
+</tbody></table>
+<h3 id="传递依赖"><a href="#传递依赖" class="headerlink" title="传递依赖"></a>传递依赖</h3><ul>
+<li>Maven 自动解析依赖的依赖（transitive dependency）</li>
+<li>可以通过 <code>&lt;dependencyManagement&gt;</code> 或 <code>&lt;exclusions&gt;</code> 控制版本冲突或排除依赖</li>
+</ul>
+<hr>
+<h2 id="4️⃣-Maven-生命周期"><a href="#4️⃣-Maven-生命周期" class="headerlink" title="4️⃣ Maven 生命周期"></a>4️⃣ Maven 生命周期</h2><table>
+<thead>
+<tr>
+<th>生命周期</th>
+<th>阶段</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>clean</strong></td>
+<td>clean</td>
+<td>清理上次构建生成的文件（通常是 <code>target</code>）</td>
+</tr>
+<tr>
+<td><strong>default</strong></td>
+<td>validate</td>
+<td>验证项目结构和必要信息是否完整</td>
+</tr>
+<tr>
+<td></td>
+<td>compile</td>
+<td>编译主源码</td>
+</tr>
+<tr>
+<td></td>
+<td>test</td>
+<td>运行单元测试</td>
+</tr>
+<tr>
+<td></td>
+<td>package</td>
+<td>打包成 jar&#x2F;war</td>
+</tr>
+<tr>
+<td></td>
+<td>verify</td>
+<td>验证打包是否正确</td>
+</tr>
+<tr>
+<td></td>
+<td>install</td>
+<td>安装到本地Maven仓库 (<code>~/.m2</code>)</td>
+</tr>
+<tr>
+<td></td>
+<td>deploy</td>
+<td>部署到远程Maven仓库</td>
+</tr>
+<tr>
+<td><strong>site</strong></td>
+<td>site</td>
+<td>生成项目文档</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p><strong>顺序执行</strong>：运行某个阶段时，会依次执行<strong>同周期</strong>的前面的阶段</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mvn package</span><br><span class="line"><span class="comment"># 等效执行: （没有clean）validate → compile → test → package</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="5️⃣-Maven-插件"><a href="#5️⃣-Maven-插件" class="headerlink" title="5️⃣ Maven 插件"></a>5️⃣ Maven 插件</h2><ul>
+<li>Maven 的功能主要由插件提供</li>
+<li>常用插件：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>maven-compiler-plugin</td>
+<td>编译 java 代码</td>
+</tr>
+<tr>
+<td>maven-surefire-plugin</td>
+<td>单元测试执行</td>
+</tr>
+<tr>
+<td>maven-jar-plugin</td>
+<td>打 jar 包</td>
+</tr>
+<tr>
+<td>maven-war-plugin</td>
+<td>打 war 包</td>
+</tr>
+<tr>
+<td>maven-dependency-plugin</td>
+<td>分析&#x2F;复制依赖</td>
+</tr>
+<tr>
+<td>spring-boot-maven-plugin</td>
+<td>Spring Boot 打包和运行</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6️⃣-多模块项目"><a href="#6️⃣-多模块项目" class="headerlink" title="6️⃣ 多模块项目"></a>6️⃣ 多模块项目</h2><ul>
+<li>父模块 (packaging&#x3D;pom)</li>
+<li>子模块通过 <code>&lt;modules&gt;</code> 声明</li>
+<li>子模块可以继承父模块的依赖管理、插件管理、属性</li>
+<li>Maven 会按顺序构建父模块 → 子模块</li>
+</ul>
+<hr>
+<h2 id="7️⃣-依赖冲突处理"><a href="#7️⃣-依赖冲突处理" class="headerlink" title="7️⃣ 依赖冲突处理"></a>7️⃣ 依赖冲突处理</h2><ul>
+<li><p>当多个版本的依赖出现时，Maven 使用 <strong>最近优先原则</strong>：</p>
+<ul>
+<li>以 <strong>依赖树中最短路径</strong>的版本为准</li>
+</ul>
+</li>
+<li><p>可以通过：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mvn dependency:tree</span><br></pre></td></tr></table></figure>
+
+<p>查看依赖树和冲突</p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比</title>
     <url>/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/</url>
     <content><![CDATA[<hr>
@@ -463,6 +687,81 @@ docker system prune -a -f
 </ol>
 <p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251105162550437.png" alt="image-20251105162550437"></p>
 <p>！<strong>但是以上机制都一般不会开启</strong></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>SpringBoot的自动装配</title>
+    <url>/blog/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/</url>
+    <content><![CDATA[<hr>
+<h2 id="🌱-什么是自动装配"><a href="#🌱-什么是自动装配" class="headerlink" title="🌱 什么是自动装配"></a>🌱 什么是自动装配</h2><p>Spring Boot 的自动装配就是：</p>
+<blockquote>
+<p><strong>根据你引入的依赖，自动帮你把相关的 Bean 配好，不用手动写配置。</strong></p>
+</blockquote>
+<p>例如：<br> 你引入了 <code>spring-boot-starter-web</code>，Spring Boot 就会自动帮你配置：</p>
+<ul>
+<li>内嵌 Tomcat</li>
+<li><code>DispatcherServlet</code></li>
+<li>MVC 相关的 Bean</li>
+</ul>
+<p>你什么都不用写，系统就能跑起来。</p>
+<hr>
+<h2 id="⚙️-核心原理"><a href="#⚙️-核心原理" class="headerlink" title="⚙️ 核心原理"></a>⚙️ 核心原理</h2><ol>
+<li><p>启动类上的注解：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br></pre></td></tr></table></figure>
+
+<p>它包含：</p>
+<ul>
+<li><code>@ComponentScan</code>（扫描组件）</li>
+<li><code>@EnableAutoConfiguration</code>（开启自动配置）</li>
+</ul>
+</li>
+<li><p><code>@EnableAutoConfiguration</code> 会去加载所有配置类<br> （这些类都写在各个 jar 包里的<br> <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> 文件中）</p>
+</li>
+<li><p>Spring Boot 会判断：</p>
+<ul>
+<li>哪些类在类路径里存在</li>
+<li>哪些 Bean 你自己没配</li>
+<li>哪些配置项在 <code>application.yml</code> 里定义了</li>
+</ul>
+<p>然后“有条件”地加载对应的配置。</p>
+</li>
+</ol>
+<hr>
+<h2 id="🎯-举个例子"><a href="#🎯-举个例子" class="headerlink" title="🎯 举个例子"></a>🎯 举个例子</h2><p><code>DataSourceAutoConfiguration</code>（数据库自动配置类）：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(DataSource.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(DataSource.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DataSourceAutoConfiguration</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> DataSource <span class="title function_">dataSource</span><span class="params">()</span> &#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>意思是：</p>
+<ul>
+<li>只有项目里有 <code>DataSource</code> 相关类，</li>
+<li>而且你没自己写 <code>DataSource</code> Bean，</li>
+<li>它才自动帮你创建一个默认的。</li>
+</ul>
+<hr>
+<h2 id="💡-小结"><a href="#💡-小结" class="headerlink" title="💡 小结"></a>💡 小结</h2><table>
+<thead>
+<tr>
+<th>关键点</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@SpringBootApplication</code></td>
+<td>启动入口</td>
+</tr>
+<tr>
+<td><code>@EnableAutoConfiguration</code></td>
+<td>启动自动配置功能</td>
+</tr>
+<tr>
+<td><code>@ConditionalOnXXX</code></td>
+<td>条件判断是否生效</td>
+</tr>
+<tr>
+<td><code>spring.factories</code> &#x2F; <code>AutoConfiguration.imports</code></td>
+<td>存放所有自动配置类列表</td>
+</tr>
+</tbody></table>
+<hr>
 ]]></content>
   </entry>
   <entry>
@@ -672,78 +971,72 @@ docker system prune -a -f
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot的自动装配</title>
-    <url>/blog/2025/10/26/SpringBoot%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/</url>
+    <title>component与配置类注册bean的区别（结合实际场景）、maven作用域</title>
+    <url>/blog/2025/11/08/component%E4%B8%8E%E9%85%8D%E7%BD%AE%E7%B1%BB%E6%B3%A8%E5%86%8Cbean%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%88%E7%BB%93%E5%90%88%E5%AE%9E%E9%99%85%E5%9C%BA%E6%99%AF%EF%BC%89%E3%80%81maven%E4%BD%9C%E7%94%A8%E5%9F%9F/</url>
     <content><![CDATA[<hr>
-<h2 id="🌱-什么是自动装配"><a href="#🌱-什么是自动装配" class="headerlink" title="🌱 什么是自动装配"></a>🌱 什么是自动装配</h2><p>Spring Boot 的自动装配就是：</p>
-<blockquote>
-<p><strong>根据你引入的依赖，自动帮你把相关的 Bean 配好，不用手动写配置。</strong></p>
-</blockquote>
-<p>例如：<br> 你引入了 <code>spring-boot-starter-web</code>，Spring Boot 就会自动帮你配置：</p>
-<ul>
-<li>内嵌 Tomcat</li>
-<li><code>DispatcherServlet</code></li>
-<li>MVC 相关的 Bean</li>
-</ul>
-<p>你什么都不用写，系统就能跑起来。</p>
-<hr>
-<h2 id="⚙️-核心原理"><a href="#⚙️-核心原理" class="headerlink" title="⚙️ 核心原理"></a>⚙️ 核心原理</h2><ol>
-<li><p>启动类上的注解：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br></pre></td></tr></table></figure>
+<h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><ol>
+<li><code>hm-common</code>模块里编写了<code>RabbitMQHelper</code>工具类：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hmall.common.utils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.RequiredArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.connection.CorrelationData;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.core.RabbitTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.util.concurrent.ListenableFutureCallback;</span><br><span class="line"><span class="keyword">import</span> java.util.UUID;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@RequiredArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RabbitMQHelper</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> RabbitTemplate rabbitTemplate;</span><br><span class="line">	<span class="comment">// 防止篇幅太长，方法就简写示意一下了</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendMessage</span><span class="params">(String exchange, String routingKey, Object message)</span> &#123;</span><br><span class="line">        rabbitTemplate.convertAndSend(exchange, routingKey, message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendDelayMessage</span><span class="params">(String exchange, String routingKey, Object message, <span class="type">int</span> delay)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendMsgWithConfirm</span><span class="params">(String exchange, String routingKey, Object msg, <span class="type">int</span> maxRetries)</span> &#123;</span><br><span class="line">        sendMsgWithConfirmInternal(exchange, routingKey, msg, maxRetries, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">sendMsgWithConfirmInternal</span><span class="params">(String exchange, String routingKey, Object msg, <span class="type">int</span> maxRetries, <span class="type">int</span> currentRetry)</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>它包含：</p>
-<ul>
-<li><code>@ComponentScan</code>（扫描组件）</li>
-<li><code>@EnableAutoConfiguration</code>（开启自动配置）</li>
-</ul>
+<ol start="2">
+<li><p><code>hm-common</code>模块里有amqp和rabbit相关依赖但是scope是provided</p>
 </li>
-<li><p><code>@EnableAutoConfiguration</code> 会去加载所有配置类<br> （这些类都写在各个 jar 包里的<br> <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> 文件中）</p>
+<li><p>其他继承了<code>hm-common</code>模块的模块调用<code>RabbitMQHelper</code>工具类来发送消息，报错：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Caused by: java.lang.NoClassDefFoundError: org/springframework/amqp/core/Message</span><br><span class="line">Caused by: java.lang.ClassNotFoundException: org.springframework.amqp.core.Message</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>Spring Boot 会判断：</p>
+<li><p>将<code>RabbitMQHelper</code>工具类做如下<code>改动</code>之后就不报错正常运行了</p>
 <ul>
-<li>哪些类在类路径里存在</li>
-<li>哪些 Bean 你自己没配</li>
-<li>哪些配置项在 <code>application.yml</code> 里定义了</li>
+<li><p>去掉<code>@Component</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hmall.common.utils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.RequiredArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.connection.CorrelationData;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.core.RabbitTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.util.concurrent.ListenableFutureCallback;</span><br><span class="line"><span class="keyword">import</span> java.util.UUID;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RequiredArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RabbitMQHelper</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> RabbitTemplate rabbitTemplate;</span><br><span class="line">	<span class="comment">// 防止篇幅太长，方法就简写示意一下了</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendMessage</span><span class="params">(String exchange, String routingKey, Object message)</span> &#123;</span><br><span class="line">        rabbitTemplate.convertAndSend(exchange, routingKey, message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendDelayMessage</span><span class="params">(String exchange, String routingKey, Object message, <span class="type">int</span> delay)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendMsgWithConfirm</span><span class="params">(String exchange, String routingKey, Object msg, <span class="type">int</span> maxRetries)</span> &#123;</span><br><span class="line">        sendMsgWithConfirmInternal(exchange, routingKey, msg, maxRetries, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">sendMsgWithConfirmInternal</span><span class="params">(String exchange, String routingKey, Object msg, <span class="type">int</span> maxRetries, <span class="type">int</span> currentRetry)</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>在配置类中注册为<code>Bean</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line">   <span class="keyword">public</span> RabbitMQHelper <span class="title function_">rabbitMQHelper</span><span class="params">(RabbitTemplate rabbitTemplate)</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RabbitMQHelper</span>(rabbitTemplate);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p>然后“有条件”地加载对应的配置。</p>
 </li>
 </ol>
-<hr>
-<h2 id="🎯-举个例子"><a href="#🎯-举个例子" class="headerlink" title="🎯 举个例子"></a>🎯 举个例子</h2><p><code>DataSourceAutoConfiguration</code>（数据库自动配置类）：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(DataSource.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(DataSource.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DataSourceAutoConfiguration</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> DataSource <span class="title function_">dataSource</span><span class="params">()</span> &#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>意思是：</p>
+<h2 id="解读"><a href="#解读" class="headerlink" title="解读"></a>解读</h2><ol>
+<li><p><code>@Component</code></p>
 <ul>
-<li>只有项目里有 <code>DataSource</code> 相关类，</li>
-<li>而且你没自己写 <code>DataSource</code> Bean，</li>
-<li>它才自动帮你创建一个默认的。</li>
+<li><p>被标注了 <code>@Component</code>的类，Spring 在<strong>启动时就会扫描并创建 Bean</strong>，并且，Spring 会<strong>加载类及其构造器、字段类型</strong>。而 <code>RabbitMQHelper</code> 构造器有 <code>RabbitTemplate</code> 参数，而 <code>RabbitTemplate</code> 依赖<code>org.springframework.amqp.core.Message</code>等类。<code>common</code> 模块里 <code>spring-rabbit</code> 依赖的 scope 被标记为 <code>provided</code>，<strong>编译可以用，但运行时 JVM 找不到</strong> <code>Message</code> 类。</p>
+<p>所以启动时报 <code>NoClassDefFoundError</code>。</p>
+</li>
 </ul>
-<hr>
-<h2 id="💡-小结"><a href="#💡-小结" class="headerlink" title="💡 小结"></a>💡 小结</h2><table>
+</li>
+<li><p><code>@Bean</code>：</p>
+<ul>
+<li>使用<strong>配置类注册 Bean</strong> 时，Spring <strong>延迟创建 Bean</strong>，直到<strong>调用</strong>方法时才真正需要 <code>RabbitTemplate</code>。这时才会用到 <code>spring-rabbit</code> 依赖。而调用方法的模块是有<code>spring-rabbit</code> 依赖的</li>
+</ul>
+</li>
+</ol>
+<table>
 <thead>
 <tr>
-<th>关键点</th>
-<th>含义</th>
+<th>方式</th>
+<th>特点</th>
+<th>风险</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>@SpringBootApplication</code></td>
-<td>启动入口</td>
+<td><code>@Component + @RequiredArgsConstructor</code></td>
+<td>Spring 扫描组件，自动注入</td>
+<td>扫描时必须能加载类依赖，否则 NoClassDefFoundError</td>
 </tr>
 <tr>
-<td><code>@EnableAutoConfiguration</code></td>
-<td>启动自动配置功能</td>
-</tr>
-<tr>
-<td><code>@ConditionalOnXXX</code></td>
-<td>条件判断是否生效</td>
-</tr>
-<tr>
-<td><code>spring.factories</code> &#x2F; <code>AutoConfiguration.imports</code></td>
-<td>存放所有自动配置类列表</td>
+<td>配置类 <code>@Bean</code> 方法</td>
+<td>手动创建 Bean，延迟注入</td>
+<td>扫描时不解析类依赖，风险低</td>
 </tr>
 </tbody></table>
-<hr>
+<ol start="3">
+<li><code>provided</code>:<ul>
+<li>作用域：编译（有） + 运行（无） + 打包（无）</li>
+</ul>
+</li>
+</ol>
+<p>⚠️ 如果 common 模块不直接依赖 AMQP，只在别的模块使用 <code>RabbitMQHelper</code>，那用provided + 配置类注册是最好的方式。</p>
 ]]></content>
   </entry>
   <entry>
