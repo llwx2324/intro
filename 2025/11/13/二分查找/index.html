@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>二分查找 | 刘文鑫-个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="二分查找的一些经典题型。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二分查找">
+<meta property="og:url" content="https://llwx2324.github.io/blog/2025/11/13/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/index.html">
+<meta property="og:site_name" content="刘文鑫-个人博客">
+<meta property="og:description" content="二分查找的一些经典题型。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251111092205333.png">
+<meta property="article:published_time" content="2025-11-13T02:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-13T02:27:08.606Z">
+<meta property="article:author" content="刘文鑫">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251111092205333.png">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="刘文鑫-个人博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/blog/css/images/L-logo-transparent.png">
+  
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.0.0"><link rel="stylesheet" href="/blog/css/prism.css" type="text/css"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">刘文鑫</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/blog/" id="subtitle">记录与分享</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/blog/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          
+            <a class="nav-icon" target="_blank" rel="noopener" href="https://github.com/llwx2324"><span class="fa fa-github"></span></a>
+          
+        
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+        <div id="search-form-wrap">
+          
+<div class="search-form">
+  <input id="search-input" type="search" placeholder="搜索本站文章..." autocomplete="off">
+  <ul id="search-results"></ul>
+</div>
+
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-二分查找" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2025/11/13/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="article-date">
+  <time class="dt-published" datetime="2025-11-13T02:00:00.000Z" itemprop="datePublished">2025-11-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      二分查找
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<h2 id="1、lc74-搜索二维矩阵"><a href="#1、lc74-搜索二维矩阵" class="headerlink" title="1、lc74-搜索二维矩阵"></a>1、lc74-搜索二维矩阵</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-a-2d-matrix/description/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/search-a-2d-matrix/description/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<ul>
+<li>二维数组下标与一维数组下标的映射</li>
+<li>取mid坐标防止溢出的写法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">searchMatrix</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> matrix.length, n = matrix[<span class="number">0</span>].length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">l</span> <span class="operator">=</span> <span class="number">0</span>, r = m * n - <span class="number">1</span>; <span class="comment">// 将二维矩阵看作长度为 m*n 的一维数组</span></span><br><span class="line">        <span class="keyword">while</span>(l &lt;= r)&#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> l + (r - l) / <span class="number">2</span>;<span class="comment">// 和 (l + r) / 2 结果相同，但养成这样的习惯可以防止溢出</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">mVal</span> <span class="operator">=</span> matrix[mid / n][mid % n]; <span class="comment">// 转换回二维坐标</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(mVal == target) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(mVal &lt; target) l = mid + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(mVal &gt; target) r = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、lc34-在排序数组中查找元素的第一个和最后一个位置"><a href="#2、lc34-在排序数组中查找元素的第一个和最后一个位置" class="headerlink" title="2、lc34-在排序数组中查找元素的第一个和最后一个位置"></a>2、lc34-在排序数组中查找元素的第一个和最后一个位置</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/description/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] searchRange(<span class="type">int</span>[] nums, <span class="type">int</span> target) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">min</span> <span class="operator">=</span> -<span class="number">1</span>, max = -<span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> <span class="variable">l</span> <span class="operator">=</span> <span class="number">0</span>, r = n - <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//找左边界</span></span><br><span class="line">        <span class="keyword">while</span>(l &lt;= r)&#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> l + (r - l) / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(nums[m] &gt;= target) r = m - <span class="number">1</span>;<span class="comment">//往左逼，相等时也要往左逼</span></span><br><span class="line">            <span class="keyword">else</span> l = m + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(nums[m] == target) min = m;<span class="comment">//每次相等都会先记录一次</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//找右边界</span></span><br><span class="line">        l = <span class="number">0</span>;</span><br><span class="line">        r = n - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(l &lt;= r)&#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> l + (r - l) / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(nums[m] &lt;= target) l = m + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> r = m - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(nums[m] == target) max = m;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;min, max&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3、lc33-搜索旋转排序数组"><a href="#3、lc33-搜索旋转排序数组" class="headerlink" title="3、lc33-搜索旋转排序数组"></a>3、lc33-搜索旋转排序数组</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-in-rotated-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/search-in-rotated-sorted-array/description/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<ul>
+<li>将数组从中间分成左右两部分，一定有一部分数组是有序的</li>
+<li>根据有序的那部分确定该如何改变上下界</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">search</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">l</span> <span class="operator">=</span> <span class="number">0</span>, r = n - <span class="number">1</span>;</span><br><span class="line">  </span><br><span class="line">        <span class="keyword">while</span> (l &lt;= r) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> (l + r) / <span class="number">2</span>;</span><br><span class="line">            <span class="comment">// 命中直接返回</span></span><br><span class="line">            <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//每次都要分，分出哪部分是有序的，有序的才可以用二分思想缩小边界</span></span><br><span class="line">            <span class="keyword">if</span> (nums[<span class="number">0</span>] &lt;= nums[mid]) &#123; <span class="comment">// 要有等于号</span></span><br><span class="line">                <span class="comment">//判断了哪部分是有序数组才能用二分，在有序数组中才能用二分</span></span><br><span class="line">                <span class="comment">//然后确定target是否在有序区间这里</span></span><br><span class="line">                <span class="keyword">if</span> (nums[<span class="number">0</span>] &lt;= target &amp;&amp; target &lt; nums[mid]) &#123; <span class="comment">// target在有序区间这</span></span><br><span class="line">                    r = mid - <span class="number">1</span>; <span class="comment">// 将范围缩小到这个区间</span></span><br><span class="line">                &#125; <span class="keyword">else</span> &#123; <span class="comment">// target不在有序区间这</span></span><br><span class="line">                    l = mid + <span class="number">1</span>;  <span class="comment">//将范围缩小到另一个区间，下一次while循环又会将这个区间分成有序和无序</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">                <span class="keyword">if</span> (nums[mid] &lt; target &amp;&amp; target &lt;= nums[n - <span class="number">1</span>]) &#123;</span><br><span class="line">                    l = mid + <span class="number">1</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    r = mid - <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="4、lc153-寻找旋转排序数组中的最小值"><a href="#4、lc153-寻找旋转排序数组中的最小值" class="headerlink" title="4、lc153-寻找旋转排序数组中的最小值"></a>4、lc153-寻找旋转排序数组中的最小值</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/description/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findMin</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">l</span> <span class="operator">=</span> <span class="number">0</span>, r = n - <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 不是找目标值，无需一直找下去直到 l == r</span></span><br><span class="line">        <span class="comment">// 当 l == r 时就是最小值的位置了，就不能再进去循环改变 l 和 r 的值了</span></span><br><span class="line">        <span class="keyword">while</span>(l &lt; r)&#123; </span><br><span class="line">            <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> l + (r - l) / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 不是找目标值，模板稍微有些不同</span></span><br><span class="line">            <span class="comment">// 通过 nums[m] 和 nums[r] 的大小关系来判断最小值在哪边</span></span><br><span class="line">            <span class="keyword">if</span>(nums[m] &lt; nums[r])&#123;</span><br><span class="line">                <span class="comment">//最小值在左边的区间（包含 m）</span></span><br><span class="line">                r = m; <span class="comment">// 缩小区间</span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123; <span class="comment">// 否则在右边的区间</span></span><br><span class="line">                l = m + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> nums[l];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5、lc4-寻找两个正序数组的中位数"><a href="#5、lc4-寻找两个正序数组的中位数" class="headerlink" title="5、lc4-寻找两个正序数组的中位数"></a>5、lc4-寻找两个正序数组的中位数</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/median-of-two-sorted-arrays/description/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/median-of-two-sorted-arrays/description/?envType=study-plan-v2&amp;envId=top-100-liked</a></p>
+<p><img src="https://ye-hai.oss-cn-shenzhen.aliyuncs.com/typora/image-20251111092205333.png" alt="image-20251111092205333"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">findMedianSortedArrays</span><span class="params">(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2)</span> &#123;</span><br><span class="line">        <span class="comment">// 确保 nums1 是较短的数组</span></span><br><span class="line">        <span class="keyword">if</span> (nums1.length &gt; nums2.length) &#123;</span><br><span class="line">            <span class="keyword">return</span> findMedianSortedArrays(nums2, nums1);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> nums1.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums2.length;</span><br><span class="line">        <span class="comment">// 二分的「边界」不是数组下标，而是“分割线的位置”，所以要取到 m</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> <span class="number">0</span>, right = m;</span><br><span class="line">        <span class="comment">// LMax 表示左半部分的最大值</span></span><br><span class="line">        <span class="comment">// RMin 表示右半部分的最小值</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">LMax</span> <span class="operator">=</span> <span class="number">0</span>, RMin = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 在较短的数组 nums1 上进行二分查找</span></span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="comment">// i 为 nums1 的分割点，左边有 i 个元素</span></span><br><span class="line">            <span class="comment">// 在较短的数组上确定分割线的位置，保证分割线两边两个数组都有元素，防止下标越界</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> (left + right) / <span class="number">2</span>; </span><br><span class="line">            <span class="comment">// j 根据总长度确定，使左半部分元素个数为 (m + n + 1) / 2</span></span><br><span class="line">            <span class="comment">// 确保时刻都满足找中位数的数量关系：整体左半部分的元素个数等于右半部分的元素个数（或多一个）</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> (m + n + <span class="number">1</span>) / <span class="number">2</span> - i;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 取分割线两侧关键值，注意边界情况</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">nums1LMax</span> <span class="operator">=</span> (i == <span class="number">0</span> ? Integer.MIN_VALUE : nums1[i - <span class="number">1</span>]); <span class="comment">// nums1 左边最大值</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">nums1RMin</span> <span class="operator">=</span> (i == m ? Integer.MAX_VALUE : nums1[i]);     <span class="comment">// nums1 右边最小值</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">nums2LMax</span> <span class="operator">=</span> (j == <span class="number">0</span> ? Integer.MIN_VALUE : nums2[j - <span class="number">1</span>]); <span class="comment">// nums2 左边最大值</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">nums2RMin</span> <span class="operator">=</span> (j == n ? Integer.MAX_VALUE : nums2[j]);     <span class="comment">// nums2 右边最小值</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 满足部分条件，要继续往右逼找到最大满足条件的 i</span></span><br><span class="line">            <span class="keyword">if</span> (nums1LMax &lt;= nums2RMin) &#123;</span><br><span class="line">                <span class="comment">// 更新当前的左半部分最大值和右半部分最小值</span></span><br><span class="line">                LMax = Math.max(nums1LMax, nums2LMax);</span><br><span class="line">                RMin = Math.min(nums1RMin, nums2RMin);</span><br><span class="line">                <span class="comment">// i 右移，尝试让 nums1 多分一些元素给左半部分</span></span><br><span class="line">                left = i + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 若 nums1LMax &gt; nums2RMin，说明 i 太大，应向左收缩</span></span><br><span class="line">                right = i - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据总长度奇偶性返回中位数</span></span><br><span class="line">        <span class="keyword">return</span> (m + n) % <span class="number">2</span> == <span class="number">0</span> ? (LMax + RMin) / <span class="number">2.0</span> : LMax;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://llwx2324.github.io/blog/2025/11/13/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="cuidg9QD_YqM2OtPCEAwJz3xk" data-title="二分查找" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2025/11/08/Maven%20%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Maven 核心知识体系</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2025/11/">November 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2025/10/">October 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2025/11/13/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">二分查找</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/11/08/Maven%20%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/">Maven 核心知识体系</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/11/08/component%E4%B8%8E%E9%85%8D%E7%BD%AE%E7%B1%BB%E6%B3%A8%E5%86%8Cbean%E7%9A%84%E5%8C%BA%E5%88%AB%E3%80%81maven%E4%BD%9C%E7%94%A8%E5%9F%9F%EF%BC%88%E7%BB%93%E5%90%88%E5%AE%9E%E9%99%85%E5%9C%BA%E6%99%AF%EF%BC%89/">component与配置类注册bean的区别、maven作用域（结合实际场景）</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/11/06/%E5%9B%9E%E6%BA%AF%E6%B3%95/">回溯法</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/11/05/Spring%20AMQP%20%E4%B8%8B%20Publisher%20Confirms%20%E5%92%8C%20Publisher%20Returns%20%E7%9A%84%E5%AF%B9%E6%AF%94/">Spring AMQP 下 Publisher Confirms 和 Publisher Returns 的对比</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 刘文鑫<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/blog/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/blog/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/blog/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+<script src="/blog/js/search.js" data-root="/blog/"></script>
+
+
+  </div>
+</body>
+</html>
